@@ -1,4 +1,5 @@
-﻿using Markdown.Tokenizer.Tokens;
+﻿using System.Linq;
+using Markdown.Tokenizer.Tokens;
 using Markdown.TokenParser.Nodes;
 
 namespace Markdown.TokenParser.Parsers;
@@ -12,7 +13,7 @@ public class HashSentencesAndEofParser : IParser
             return new NullNode();
         }
 
-        var newTokens = tokens.Offset(3);
+        var newTokens = new TokenList(tokens.Take(1).Concat(tokens.Skip(3)));
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new SentenceParser(new StrongParser(), new EmphasisParser(), new TextParser()));
 
@@ -21,7 +22,7 @@ public class HashSentencesAndEofParser : IParser
             return new NullNode();
         }
         
-        consumed += 3;
+        consumed += 2;
 
         return new HeadingNode(nodes, consumed);
     }

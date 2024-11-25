@@ -2,6 +2,7 @@
 public enum TypeOfToken
 {
     Word,
+    Number,
     Underscore,
     Whitespace,
     Hash,

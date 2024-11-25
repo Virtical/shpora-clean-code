@@ -57,10 +57,6 @@ public class TokenList : IEnumerable<Token>
         return index >= tokens.Count ? new TokenList(new List<Token>()) : new TokenList(tokens.Skip(index));
     }
 
-    public Token First => tokens[0];
-    public Token Second => tokens[1];
-    public Token Third => tokens[2];
-
     public override string ToString()
     {
         var tokenStrings = tokens.Select(t => t.ToString());

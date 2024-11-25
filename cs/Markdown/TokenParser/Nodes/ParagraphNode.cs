@@ -13,6 +13,7 @@ public class ParagraphNode : INode
         Consumed = consumed;
     }
 
+    public TypeOfNode Type => TypeOfNode.Text;
     public bool Present => true;
     public bool Null => false;
 }

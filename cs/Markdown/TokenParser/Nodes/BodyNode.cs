@@ -14,5 +14,6 @@ public class BodyNode : INode
     }
 
     public bool Present => true;
+    public TypeOfNode Type => TypeOfNode.Text;
     public bool Null => false;
 }

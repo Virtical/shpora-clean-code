@@ -8,5 +8,6 @@ public class NullNode : INode
     public bool Present => false;
     public string? Value => null;
     public int Consumed => 0;
+    public TypeOfNode Type => TypeOfNode.Text;
     public List<INode>? Descendants => null;
 }

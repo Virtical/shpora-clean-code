@@ -7,7 +7,7 @@ namespace Markdown.Tests;
 [TestFixture]
 public class MdTokenizerTests
 {
-    private static IEnumerable<TestCaseData> TokenizeCases()
+    private static IEnumerable<TestCaseData> MdTokenizeCases()
     {
         yield return new TestCaseData(null, new List<Token>
             {
@@ -23,13 +23,21 @@ public class MdTokenizerTests
             })
             .SetName("EmptyString");
         
-        yield return new TestCaseData("ОбычныйТекст", new List<Token>
+        yield return new TestCaseData("SimpleText", new List<Token>
             {
                 new Token(TypeOfToken.StartOfFile), 
-                new Token(TypeOfToken.Word, "ОбычныйТекст"), 
+                new Token(TypeOfToken.Word, "SimpleText"), 
                 new Token(TypeOfToken.EndOfFile)
             })
             .SetName("OnlyText");
+        
+        yield return new TestCaseData("52", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.Number, "52"), 
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("OnlyNumber");
         
         yield return new TestCaseData(" ", new List<Token>
             {
@@ -71,11 +79,13 @@ public class MdTokenizerTests
             })
             .SetName("DifferentCharacters");
         
-        yield return new TestCaseData("#World _Hello_", new List<Token>
+        yield return new TestCaseData("#World 52 _Hello_", new List<Token>
             {
                 new Token(TypeOfToken.StartOfFile),
                 new Token(TypeOfToken.Hash, "#"),
                 new Token(TypeOfToken.Word, "World"),
+                new Token(TypeOfToken.Whitespace, " "),
+                new Token(TypeOfToken.Number, "52"),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Underscore, "_"),
                 new Token(TypeOfToken.Word, "Hello"),
@@ -109,7 +119,7 @@ public class MdTokenizerTests
             .SetName("MultipleWhitespaces");
     }
     
-    [TestCaseSource(nameof(TokenizeCases))]
+    [TestCaseSource(nameof(MdTokenizeCases))]
     public void Tokenize_CorrectlySplitsTestIntoTokens_When(string text, List<Token> expectedTokens)
     {
         var mdTokenizer = new MdTokenizer();

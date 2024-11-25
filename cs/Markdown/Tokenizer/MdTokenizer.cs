@@ -9,6 +9,7 @@ public class MdTokenizer : IMdTokenizer
     private static readonly List<ITokenScanner> TokenScanners = new List<ITokenScanner>
     {
         new SimpleScanner(),
+        new NumberScanner(),
         new TextScanner()
     };
     public TokenList Tokenize(string text)
