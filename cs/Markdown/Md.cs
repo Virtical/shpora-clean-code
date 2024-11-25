@@ -1,19 +1,27 @@
-﻿namespace Markdown;
+﻿using System.Collections.Generic;
+using Markdown.Converter;
+using Markdown.Tokenizer;
+using Markdown.TokenParser;
+
+namespace Markdown;
 public class Md
 {
-    private readonly MdParser parser = new MdParser();
-    private readonly MdRenderer renderer = new MdRenderer();
+    private readonly IMdTokenizer mdTokenizer;
+    private readonly IMdTokenParser mdTokenParser;
+    private readonly IMdConverter mdConverter;
 
-    public Md(MdParser parser, MdRenderer renderer)
+    public Md(IMdTokenizer mdTokenizer, IMdTokenParser mdTokenParser, IMdConverter mdConverter)
     {
-        this.parser = parser;
-        this.renderer = renderer;
+        this.mdTokenizer = mdTokenizer;
+        this.mdTokenParser = mdTokenParser;
+        this.mdConverter = mdConverter;
     }
 
     public string Render(string text)
     {
-        var tokens = parser.SplitIntoTokens(text);
-        var renderedText = renderer.RenderTokens(tokens);
+        var tokens = mdTokenizer.Tokenize(text);
+        var parsed = mdTokenParser.Parse(tokens);
+        var renderedText = mdConverter.RenderTokens(parsed);
 
         return renderedText;
     }
