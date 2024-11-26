@@ -21,20 +21,31 @@ public class StrongParser : IParser
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new StrongCloseParser());
         
-        if (!newTokens.PeekAtOr(consumed, 
+        if (newTokens.PeekAtOr(consumed, 
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace }
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
                 ))
         {
-            return new NullNode();
+            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
+        
+            consumed += 7;
+        
+            return new StrongNode(TypeOfNode.Strong, nodes, consumed);
         }
         
-        nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
+        if (newTokens.PeekAtOr(consumed, 
+                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace }
+            ))
+        {
+            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
         
-        consumed += 7;
+            consumed += 6;
         
-        return new StrongNode(TypeOfNode.Strong, nodes, consumed);
+            return new StrongNode(TypeOfNode.Strong, nodes, consumed);
+        }
+
+        return new NullNode();
+
     }
 }

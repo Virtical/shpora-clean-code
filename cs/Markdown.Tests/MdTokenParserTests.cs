@@ -118,11 +118,12 @@ public class MdTokenParserTests
                         new StrongNode(TypeOfNode.Strong, 
                             new List<INode>
                             {
-                                new Node(TypeOfNode.Text, "Strong", 1), 
+                                new Node(TypeOfNode.Text, "Strong", 1),
                                 new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
                                 {
                                     new Node(TypeOfNode.Text, "Emphasis", 1), 
-                                }, 5),
+                                }, 4),
+                                new Node(TypeOfNode.Text, " ", 1), 
                                 new Node(TypeOfNode.Text, "Strong", 1)
                             }, 13)
                     }, 13)
@@ -304,7 +305,8 @@ public class MdTokenParserTests
                                 new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
                                 {
                                     new Node(TypeOfNode.Text, "Emphasis", 1), 
-                                }, 5),
+                                }, 4),
+                                new Node(TypeOfNode.Text, " ", 1), 
                                 new Node(TypeOfNode.Text, "Strong", 1)
                             }, 13)
                     }, 15)

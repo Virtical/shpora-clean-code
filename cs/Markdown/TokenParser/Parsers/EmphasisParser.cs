@@ -42,20 +42,31 @@ public class EmphasisParser : IParser
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new EmphasisCloseParser());
         
-        if (!newTokens.PeekAtOr(consumed, 
+        if (newTokens.PeekAtOr(consumed, 
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
+            ))
+        {
+            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
+        
+            consumed += 5;
+            
+            return new EmphasisNode(TypeOfNode.Emphasis, nodes, consumed);
+        }
+        
+        if (newTokens.PeekAtOr(consumed, 
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace },
                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace }
             ))
         {
-            return new NullNode();
+            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
+        
+            consumed += 4;
+            
+            return new EmphasisNode(TypeOfNode.Emphasis, nodes, consumed);
         }
-        
-        nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
-        
-        consumed += 5;
-        
-        return new EmphasisNode(TypeOfNode.Emphasis, nodes, consumed);
+
+        return new NullNode();
+
     }
 }

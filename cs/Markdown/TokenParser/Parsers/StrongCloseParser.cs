@@ -24,6 +24,6 @@ public class StrongCloseParser : IParser
             return node;
         }
 
-        return tokens.Any() ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : new NullNode();
+        return tokens.Any() && tokens[0].Type != TypeOfToken.EndOfFile ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : new NullNode();
     }
 }

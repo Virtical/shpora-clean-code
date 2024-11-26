@@ -14,7 +14,7 @@ public class HeadingNode : INode
         Consumed = consumed;
     }
 
-    public TypeOfNode Type => TypeOfNode.Text;
+    public TypeOfNode Type => TypeOfNode.Heading;
     public bool Present => true;
     public bool Null => false;
 }

@@ -4,5 +4,7 @@ public enum TypeOfNode
 {
     Text,
     Strong,
-    Emphasis
+    Emphasis,
+    Paragraph,
+    Heading
 }
