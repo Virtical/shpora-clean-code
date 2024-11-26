@@ -120,10 +120,11 @@ public class MdTokenizerTests
     }
     
     [TestCaseSource(nameof(MdTokenizeCases))]
-    public void Tokenize_CorrectlySplitsTestIntoTokens_When(string text, List<Token> expectedTokens)
+    public void Tokenize_CorrectlySplitsTestIntoTokens_When(string markdown, List<Token> expectedTokens)
     {
         var mdTokenizer = new MdTokenizer();
-        var tokens = mdTokenizer.Tokenize(text);
+        
+        var tokens = mdTokenizer.Tokenize(markdown);
 
         tokens.Should().BeEquivalentTo(expectedTokens, option => option.AllowingInfiniteRecursion());
     }

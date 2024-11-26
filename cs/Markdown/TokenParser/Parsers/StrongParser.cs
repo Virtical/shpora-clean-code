@@ -21,6 +21,14 @@ public class StrongParser : IParser
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new StrongCloseParser());
         
+        if (tokens.PeekOr(
+                new[] { TypeOfToken.Whitespace },
+                new[] { TypeOfToken.Whitespace }
+            ))
+        {
+            nodes.Insert(0, new Node(TypeOfNode.Text, " ", 1));
+        }
+        
         if (newTokens.PeekAtOr(consumed, 
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }

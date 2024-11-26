@@ -11,23 +11,24 @@ namespace Markdown.Tests;
 [TestFixture]
 public class MdToHtmlConverterTests
 {
-    private static IEnumerable<TestCaseData> MdToHtmlConverterCases()
+    [TestCase("Test", "<p>Test</p>", TestName = "ParagraphWord")]
+    [TestCase("# Test", "<h1>Test</h1>", TestName = "HeadingWord")]
+    [TestCase("_Test_", "<p><em>Test</em></p>", TestName = "ParagraphEmphasisWord")]
+    [TestCase("__Test__", "<p><strong>Test</strong></p>", TestName = "ParagraphStrongWord")]
+    [TestCase("# __Test__", "<h1><strong>Test</strong></h1>", TestName = "StrongWord")]
+    [TestCase("_Test_ __Test__", "<p><em>Test</em> <strong>Test</strong></p>", TestName = "ParagraphEmphasisAndStrong")]
+    [TestCase("# _Test_ __Test__", "<h1><em>Test</em> <strong>Test</strong></h1>", TestName = "HeadingEmphasisAndStrong")]
+    [TestCase("__Strong _Emphasis_ Strong__", "<p><strong>Strong <em>Emphasis</em> Strong</strong></p>", TestName = "ParagraphEmphasisInsideStrong")]
+    [TestCase("# __Strong _Emphasis_ Strong__", "<h1><strong>Strong <em>Emphasis</em> Strong</strong></h1>", TestName = "HeadingEmphasisInsideStrong")]
+    public void Parse_BuildCorrectAST_When(string markdown, string expectedHtml)
     {
         var tokenizer = new MdTokenizer();
         var tokenParser = new MdTokenParser();
-        
-        yield return new TestCaseData(tokenParser.Parse(tokenizer.Tokenize("Test")), "<p>Test</p>").SetName("ParagraphWord");
-        yield return new TestCaseData(tokenParser.Parse(tokenizer.Tokenize("# Test")), "<h1>Test</h1>").SetName("HeadingWord");
-        yield return new TestCaseData(tokenParser.Parse(tokenizer.Tokenize("_Test_")), "<p><em>Test</em></p>").SetName("ParagraphEmphasisWord");
-        yield return new TestCaseData(tokenParser.Parse(tokenizer.Tokenize("__Test__")), "<p><strong>Test</strong></p>").SetName("ParagraphStrongWord");
-        yield return new TestCaseData(tokenParser.Parse(tokenizer.Tokenize("# __Test__")), "<h1><strong>Test</strong></h1>").SetName("StrongWord");
-    }
-    
-    [TestCaseSource(nameof(MdToHtmlConverterCases))]
-    public void Parse_BuildCorrectAST_When(BodyNode bodyNode, string expectedHtml)
-    {
         var mdToHtmlConverter = new MdToHtmlConverter();
-        var html = mdToHtmlConverter.RenderTokens(bodyNode);
+
+        var tokens = tokenizer.Tokenize(markdown);
+        var ast = tokenParser.Parse(tokens);
+        var html = mdToHtmlConverter.RenderTokens(ast);
 
         html.Should().Be(expectedHtml);
     }

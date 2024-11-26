@@ -38,9 +38,17 @@ public class EmphasisParser : IParser
             return new NullNode();
         }
         
-        var newTokens = tokens.Grab(2);
+        var newTokens = tokens.Offset(2);
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new EmphasisCloseParser());
+        
+        if (tokens.PeekOr(
+                new[] { TypeOfToken.Whitespace },
+                new[] { TypeOfToken.Whitespace }
+            ))
+        {
+            nodes.Insert(0, new Node(TypeOfNode.Text, " ", 1));
+        }
         
         if (newTokens.PeekAtOr(consumed, 
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfFile },

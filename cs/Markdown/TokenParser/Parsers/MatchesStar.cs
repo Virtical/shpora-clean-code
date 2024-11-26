@@ -16,6 +16,15 @@ public class MatchesStar
             var node = parser.Match(tokens.Offset(consumed));
             if (node.Null)
                 break;
+
+            if (node.Type is TypeOfNode.Emphasis or TypeOfNode.Strong)
+            {
+                if (node.Descendants[0].Value == " ")
+                {
+                    matchedNodes.Add(node.Descendants[0]);
+                    node.Descendants.RemoveAt(0);
+                }
+            }
             
             matchedNodes.Add(node);
             consumed += node.Consumed;
