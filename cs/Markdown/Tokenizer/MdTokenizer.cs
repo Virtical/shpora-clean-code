@@ -8,6 +8,7 @@ public class MdTokenizer : IMdTokenizer
 {
     private static readonly List<ITokenScanner> TokenScanners = new List<ITokenScanner>
     {
+        new EscapingScanner(),
         new SimpleScanner(),
         new NumberScanner(),
         new TextScanner()

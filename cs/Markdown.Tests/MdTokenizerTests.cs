@@ -117,6 +117,57 @@ public class MdTokenizerTests
                 new Token(TypeOfToken.EndOfFile)
             })
             .SetName("MultipleWhitespaces");
+        
+        yield return new TestCaseData(@"\_Escaped\_", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.Word, "_", 2),
+                new Token(TypeOfToken.Word, "Escaped"),
+                new Token(TypeOfToken.Word, "_", 2),
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("EscapedEmphasis");
+        
+        yield return new TestCaseData(@"\__Strong\__", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.Word, "_", 2),
+                new Token(TypeOfToken.Underscore, "_"),
+                new Token(TypeOfToken.Word, "Strong"),
+                new Token(TypeOfToken.Word, "_", 2),
+                new Token(TypeOfToken.Underscore, "_"),
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("EscapedStrong");
+
+        yield return new TestCaseData(@"\# Heading", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.Word, "#", 2),
+                new Token(TypeOfToken.Whitespace, " "),
+                new Token(TypeOfToken.Word, "Heading"),
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("EscapedHash");
+
+        yield return new TestCaseData(@"Hello\ World", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.Word, @"Hello\"),
+                new Token(TypeOfToken.Whitespace, " "),
+                new Token(TypeOfToken.Word, "World"),
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("EscapedWhitespace");
+
+        yield return new TestCaseData(@"\\\\", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.Word, "\\", 2),
+                new Token(TypeOfToken.Word, "\\", 2),
+                new Token(TypeOfToken.EndOfFile)
+            })
+            .SetName("DoubleEscape");
     }
     
     [TestCaseSource(nameof(MdTokenizeCases))]

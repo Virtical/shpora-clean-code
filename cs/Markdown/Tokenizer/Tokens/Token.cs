@@ -4,16 +4,24 @@ public class Token
 {
     public TypeOfToken Type { get; }
     public string Value { get; }
-    public int Length => Value.Length;
+    public int Length { get; }
 
     public Token(TypeOfToken type) 
         : this(type, "")
     {
+    }
+    
+    public Token(TypeOfToken type, string value, int length)
+    {
+        Type = type;
+        Value = value;
+        Length = length;
     }
         
     public Token(TypeOfToken type, string value)
     {
         Type = type;
         Value = value;
+        Length = Value.Length;
     }
 }
