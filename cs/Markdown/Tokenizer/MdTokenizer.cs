@@ -23,11 +23,9 @@ public class MdTokenizer : IMdTokenizer
 
     private static LinkedList<Token> TokensAsLinkedList(string text)
     {
-        var tokens = new LinkedList<Token>();
-        
         if (string.IsNullOrEmpty(text))
         {
-            return tokens;
+            return new LinkedList<Token>();
         }
 
         var token = ScanOneToken(text);
@@ -37,11 +35,11 @@ public class MdTokenizer : IMdTokenizer
         return remainingTokens;
     }
     
-    private static Token ScanOneToken(string plainMarkdown)
+    private static Token ScanOneToken(string markdown)
     {
         foreach (var scanner in TokenScanners)
         {
-            var token = scanner.FromString(plainMarkdown);
+            var token = scanner.TryGetToken(markdown);
             
             if (token != null)
             {
@@ -49,6 +47,6 @@ public class MdTokenizer : IMdTokenizer
             }
         }
         
-        throw new Exception($"The scanners could not match the given input: {plainMarkdown}");
+        throw new Exception($"The scanners could not match the given input: {markdown}");
     }
 }

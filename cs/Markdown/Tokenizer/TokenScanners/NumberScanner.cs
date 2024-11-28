@@ -5,7 +5,7 @@ namespace Markdown.Tokenizer.TokenScanners;
 
 public class NumberScanner : ITokenScanner
 {
-    public Token? FromString(string plainMarkdown)
+    public Token? TryGetToken(string plainMarkdown)
     {
         if (string.IsNullOrEmpty(plainMarkdown))
         {

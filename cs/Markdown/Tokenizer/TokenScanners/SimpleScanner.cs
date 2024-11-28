@@ -13,7 +13,7 @@ public class SimpleScanner : ITokenScanner
         { '#', TypeOfToken.Hash }
     };
 
-    public Token? FromString(string plainMarkdown)
+    public Token? TryGetToken(string plainMarkdown)
     {
         if (string.IsNullOrEmpty(plainMarkdown))
         {

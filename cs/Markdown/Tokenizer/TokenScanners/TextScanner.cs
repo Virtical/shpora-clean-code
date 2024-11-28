@@ -7,7 +7,7 @@ public class TextScanner : ITokenScanner
 {
     private readonly SimpleScanner simpleScanner = new();
     private readonly NumberScanner numberScanner = new();
-    public Token? FromString(string plainMarkdown)
+    public Token? TryGetToken(string plainMarkdown)
     {
         if (string.IsNullOrEmpty(plainMarkdown))
         {
@@ -18,8 +18,8 @@ public class TextScanner : ITokenScanner
         {
             var text = new string(plainMarkdown
                 .TakeWhile(c => 
-                    simpleScanner.FromString(c.ToString()) == null &&
-                    numberScanner.FromString(c.ToString()) == null)
+                    simpleScanner.TryGetToken(c.ToString()) == null &&
+                    numberScanner.TryGetToken(c.ToString()) == null)
                 .ToArray());
 
             return new Token(TypeOfToken.Word, text);
