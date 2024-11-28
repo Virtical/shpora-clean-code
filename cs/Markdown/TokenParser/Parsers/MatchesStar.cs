@@ -6,20 +6,20 @@ namespace Markdown.TokenParser.Parsers;
 
 public class MatchesStar
 {
-    public static (List<INode> MatchedNodes, int Consumed) MatchStar(TokenList tokens, IParser parser)
+    public static (List<Node> MatchedNodes, int Consumed) MatchStar(TokenList tokens, IParser parser)
     {
-        var matchedNodes = new List<INode>();
+        var matchedNodes = new List<Node>();
         var consumed = 0;
 
         while (true)
         {
-            var node = parser.Match(tokens.Offset(consumed));
-            if (node.Null)
+            var node = parser.TryMatch(tokens.Offset(consumed));
+            if (node == null)
                 break;
-
+            
             if (node.Type is TypeOfNode.Emphasis or TypeOfNode.Strong)
             {
-                if (node.Descendants[0].Value == " ")
+                if (node.Descendants != null && node.Descendants[0].Value == " ")
                 {
                     matchedNodes.Add(node.Descendants[0]);
                     node.Descendants.RemoveAt(0);

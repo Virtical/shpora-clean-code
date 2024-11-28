@@ -6,5 +6,6 @@ public enum TypeOfNode
     Strong,
     Emphasis,
     Paragraph,
-    Heading
+    Heading,
+    Body
 }

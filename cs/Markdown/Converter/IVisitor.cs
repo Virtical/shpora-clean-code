@@ -4,5 +4,5 @@ namespace Markdown.Converter;
 
 public interface IVisitor
 {
-    public string Visit(INode node);
+    public string Visit(Node node);
 }

@@ -5,5 +5,5 @@ namespace Markdown.TokenParser;
 
 public interface IMdTokenParser
 {
-    public INode Parse(TokenList tokens);
+    public Node Parse(TokenList tokens);
 }

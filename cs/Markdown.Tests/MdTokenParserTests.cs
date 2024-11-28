@@ -14,9 +14,9 @@ public class MdTokenParserTests
     {
         var tokenizer = new MdTokenizer();
         yield return new TestCaseData("Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body , new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "Test", 3)
                     }, 3)
@@ -24,9 +24,9 @@ public class MdTokenParserTests
             .SetName("OnlyWord");
         
         yield return new TestCaseData("123",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "123", 3)
                     }, 3)
@@ -34,11 +34,11 @@ public class MdTokenParserTests
             .SetName("OnlyNumber");
         
         yield return new TestCaseData("_Test_",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                        new Node(TypeOfNode.Emphasis, new List<Node>
                         {
                             new Node(TypeOfNode.Text, "Test", 1)
                         }, 5)
@@ -47,12 +47,12 @@ public class MdTokenParserTests
             .SetName("EmphasisWord");
         
         yield return new TestCaseData("__Test__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new StrongNode(TypeOfNode.Strong, 
-                            new List<INode>
+                        new Node(TypeOfNode.Strong, 
+                            new List<Node>
                             {
                                 new Node(TypeOfNode.Text, "Test", 1)
                             }, 7)
@@ -61,9 +61,9 @@ public class MdTokenParserTests
             .SetName("StrongWord");
         
         yield return new TestCaseData("# Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new HeadingNode(new List<INode>
+                    new Node(TypeOfNode.Heading, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "Test", 3)
                     }, 5)
@@ -71,12 +71,12 @@ public class MdTokenParserTests
             .SetName("HashWord");
         
         yield return new TestCaseData("_785_",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new EmphasisNode(TypeOfNode.Emphasis, 
-                            new List<INode>
+                        new Node(TypeOfNode.Emphasis, 
+                            new List<Node>
                             {
                                 new Node(TypeOfNode.Text, "785", 1)
                             }, 5)
@@ -85,12 +85,12 @@ public class MdTokenParserTests
             .SetName("EmphasisNumber");
         
         yield return new TestCaseData("__543__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new StrongNode(TypeOfNode.Strong, 
-                            new List<INode>
+                        new Node(TypeOfNode.Strong, 
+                            new List<Node>
                             {
                                 new Node(TypeOfNode.Text, "543", 1)
                             }, 7)
@@ -99,9 +99,9 @@ public class MdTokenParserTests
             .SetName("StrongNumber");
         
         yield return new TestCaseData("Test Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "Test", 2),
                         new Node(TypeOfNode.Text, " ", 1),
@@ -111,16 +111,16 @@ public class MdTokenParserTests
             .SetName("TextWithSeveralWords");
         
         yield return new TestCaseData("__Strong _Emphasis_ Strong__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new StrongNode(TypeOfNode.Strong, 
-                            new List<INode>
+                        new Node(TypeOfNode.Strong, 
+                            new List<Node>
                             {
                                 new Node(TypeOfNode.Text, "Strong", 1),
                                 new Node(TypeOfNode.Text, " ", 1), 
-                                new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                                new Node(TypeOfNode.Emphasis, new List<Node>
                                 {
                                     new Node(TypeOfNode.Text, "Emphasis", 1), 
                                 }, 4),
@@ -132,11 +132,11 @@ public class MdTokenParserTests
             .SetName("EmphasisInsideStrong");
         
         yield return new TestCaseData("_Emphasis __Strong__ Emphasis_",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                        new Node(TypeOfNode.Emphasis, new List<Node>
                         {
                             new Node(TypeOfNode.Text, "Emphasis", 1),
                             new Node(TypeOfNode.Text, " ", 1),
@@ -153,9 +153,9 @@ public class MdTokenParserTests
             .SetName("StrongInsideEmphasis");
         
         yield return new TestCaseData("__Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2), 
                         new Node(TypeOfNode.Text, "_", 1), 
@@ -165,9 +165,9 @@ public class MdTokenParserTests
             .SetName("UnpairedStrong");
         
         yield return new TestCaseData("_Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2), 
                         new Node(TypeOfNode.Text, "Test", 2)
@@ -176,9 +176,9 @@ public class MdTokenParserTests
             .SetName("UnpairedEmphasis");
         
         yield return new TestCaseData("Te_st Te_st",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "Te", 2),
                         new Node(TypeOfNode.Text, "_", 1),
@@ -192,9 +192,9 @@ public class MdTokenParserTests
             .SetName("EmphasisInDifferentWords");
         
         yield return new TestCaseData("_ Test_",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2),
                         new Node(TypeOfNode.Text, " ", 1),
@@ -205,9 +205,9 @@ public class MdTokenParserTests
             .SetName("OpeningSingleUnderscoreFollowedByWhitespace");
         
         yield return new TestCaseData("__ Test__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2),
                         new Node(TypeOfNode.Text, "_", 1),
@@ -220,9 +220,9 @@ public class MdTokenParserTests
             .SetName("OpeningDoubleUnderscoreFollowedByWhitespace");
         
         yield return new TestCaseData("_Test _",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2),
                         new Node(TypeOfNode.Text, "Test", 1),
@@ -233,9 +233,9 @@ public class MdTokenParserTests
             .SetName("ClosingSingleUnderscorePrecededByWhitespace");
         
         yield return new TestCaseData("__Test __",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "_", 2),
                         new Node(TypeOfNode.Text, "_", 1),
@@ -248,9 +248,9 @@ public class MdTokenParserTests
             .SetName("ClosingDoubleUnderscorePrecededByWhitespace");
         
         yield return new TestCaseData("Test_25_87_Test",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
                         new Node(TypeOfNode.Text, "Test", 2),
                         new Node(TypeOfNode.Text, "_", 1),
@@ -264,11 +264,11 @@ public class MdTokenParserTests
             .SetName("UnderscoreInsideTheTextWithNumbers");
         
         yield return new TestCaseData("_Te_st",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                        new Node(TypeOfNode.Emphasis, new List<Node>
                         {
                             new Node(TypeOfNode.Text, "Te", 1),
                         }, 4),
@@ -278,16 +278,16 @@ public class MdTokenParserTests
             .SetName("EmphasisPartOfWord");
         
         yield return new TestCaseData("_Test_ __Test__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new ParagraphNode(new List<INode>
+                    new Node(TypeOfNode.Paragraph, new List<Node>
                     {
-                        new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                        new Node(TypeOfNode.Emphasis, new List<Node>
                         {
                             new Node(TypeOfNode.Text, "Test", 1),
                         }, 4),
                         new Node(TypeOfNode.Text, " ", 1), 
-                        new StrongNode(TypeOfNode.Strong, new List<INode>
+                        new Node(TypeOfNode.Strong, new List<Node>
                         {
                             new Node(TypeOfNode.Text, "Test", 1),
                         }, 7),
@@ -296,16 +296,16 @@ public class MdTokenParserTests
             .SetName("WhitespaceSeparatedSelections");
         
         yield return new TestCaseData("# __Strong _Emphasis_ Strong__",
-                new BodyNode(new List<INode>
+                new Node(TypeOfNode.Body, new List<Node>
                 {
-                    new HeadingNode(new List<INode>
+                    new Node(TypeOfNode.Heading, new List<Node>
                     {
-                        new StrongNode(TypeOfNode.Strong, 
-                            new List<INode>
+                        new Node(TypeOfNode.Strong, 
+                            new List<Node>
                             {
                                 new Node(TypeOfNode.Text, "Strong", 1),
                                 new Node(TypeOfNode.Text, " ", 1), 
-                                new EmphasisNode(TypeOfNode.Emphasis, new List<INode>
+                                new Node(TypeOfNode.Emphasis, new List<Node>
                                 {
                                     new Node(TypeOfNode.Text, "Emphasis", 1), 
                                 }, 4),
@@ -318,7 +318,7 @@ public class MdTokenParserTests
     }
     
     [TestCaseSource(nameof(MdTokenParseCases))]
-    public void Parse_BuildCorrectAST_When(string markdown, BodyNode expectedSyntaxTree)
+    public void Parse_BuildCorrectAST_When(string markdown, Node expectedSyntaxTree)
     {
         var mdTokenizer = new MdTokenizer();
         var mdTokenParser = new MdTokenParser();

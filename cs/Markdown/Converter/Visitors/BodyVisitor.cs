@@ -13,12 +13,12 @@ public class BodyVisitor : IVisitor
         { TypeOfNode.Paragraph, () => new ParagraphVisitor() }
     };
     
-    public string Visit(INode bodyNode)
+    public string Visit(Node bodyNode)
     {
         return string.Join(string.Empty, bodyNode.Descendants.Select(paragraph => VisitorFor(paragraph).Visit(paragraph)));
     }
     
-    private static IVisitor VisitorFor(INode node)
+    private static IVisitor VisitorFor(Node node)
     {
         if (SentenceVisitors.TryGetValue(node.Type, out var visitorFactory))
         {

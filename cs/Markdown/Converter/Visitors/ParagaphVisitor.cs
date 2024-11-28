@@ -7,12 +7,12 @@ public class ParagraphVisitor : IVisitor
 {
     private readonly SentenceVisitor sentenceVisitor = new();
     
-    public string Visit(INode paragraphNode)
+    public string Visit(Node paragraphNode)
     {
         return $"<p>{SentencesFor(paragraphNode)}</p>";
     }
 
-    private string SentencesFor(INode paragraphNode)
+    private string SentencesFor(Node paragraphNode)
     {
         return string.Join(string.Empty, paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
     }

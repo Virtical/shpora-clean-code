@@ -4,7 +4,7 @@ namespace Markdown.Converter.Visitors;
 
 public class TextVisitor : IVisitor
 {
-    public string Visit(INode node)
+    public string Visit(Node node)
     {
         return node.Value;
     }

@@ -8,10 +8,15 @@ namespace Markdown.TokenParser;
 
 public class MdTokenParser : IMdTokenParser
 {
-    public INode Parse(TokenList tokens)
+    public Node Parse(TokenList tokens)
     {
-        var body = new BodyParser().Match(tokens);
+        var body = new BodyParser().TryMatch(tokens);
 
+        if (body == null)
+        {
+            throw new Exception("Body is null");
+        }
+        
         if (tokens.Count() != body.Consumed)
         {
             throw new Exception($"Syntax error: {tokens[body.Consumed]}");

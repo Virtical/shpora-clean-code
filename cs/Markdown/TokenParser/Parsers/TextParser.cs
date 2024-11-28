@@ -5,7 +5,7 @@ namespace Markdown.TokenParser.Parsers;
 
 public class TextParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
         if (tokens.PeekOr(
                 new[] { TypeOfToken.StartOfFile, TypeOfToken.Number, TypeOfToken.EndOfFile },
@@ -47,6 +47,6 @@ public class TextParser : IParser
             return new Node(TypeOfNode.Text, tokens[0].Value, 1);
         }
         
-        return new NullNode();
+        return null;
     }
 }

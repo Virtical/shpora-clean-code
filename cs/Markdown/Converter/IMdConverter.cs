@@ -4,5 +4,5 @@ namespace Markdown.Converter;
 
 public interface IMdConverter
 {
-    string RenderTokens(INode tokens);
+    string RenderTokens(Node tokens);
 }

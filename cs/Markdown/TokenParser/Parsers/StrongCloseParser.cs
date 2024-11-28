@@ -6,7 +6,7 @@ namespace Markdown.TokenParser.Parsers;
 
 public class StrongCloseParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
         if (tokens.PeekOr(
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
@@ -15,15 +15,15 @@ public class StrongCloseParser : IParser
                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
                 ))
         {
-            return new NullNode();
+            return null;
         }
 
         var node = MatchesFirst.MatchFirst(tokens, new EmphasisParser());
-        if (!node.Null)
+        if (node != null)
         {
             return node;
         }
 
-        return tokens.Any() && tokens[0].Type != TypeOfToken.EndOfFile ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : new NullNode();
+        return tokens.Any() && tokens[0].Type != TypeOfToken.EndOfFile ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
     }
 }

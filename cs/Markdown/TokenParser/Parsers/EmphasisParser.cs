@@ -6,75 +6,94 @@ namespace Markdown.TokenParser.Parsers;
 
 public class EmphasisParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
-        if (tokens.Peek(TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile))
+        var node = TryMatchPartOfWordEmphasis(tokens);
+        if (node != null)
         {
-            return new EmphasisNode(TypeOfNode.Emphasis, new List<INode>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 5);
+            return node;
         }
         
-        if (tokens.Peek(TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
+        var openingNodes = TryMatchOpeningEmphasis(tokens);
+        if (openingNodes == null)
         {
-            return new EmphasisNode(TypeOfNode.Emphasis, new List<INode>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 4);
-        }
-        
-        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile))
-        {
-            return new EmphasisNode(TypeOfNode.Emphasis, new List<INode>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 4);
-        }
-        
-        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
-        {
-            return new EmphasisNode(TypeOfNode.Emphasis, new List<INode>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 3);
-        }
-        
-        if (!tokens.PeekOr(
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Number },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word },
-                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Number },
-                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Word }
-            ))
-        {
-            return new NullNode();
+            return null;
         }
         
         var newTokens = tokens.Offset(2);
         
-        var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new EmphasisCloseParser());
+        var (contentNodes, consumed) = MatchesStar.MatchStar(newTokens, new EmphasisCloseParser());
+        openingNodes.AddRange(contentNodes);
         
+        return TryMatchClosingEmphasis(newTokens, openingNodes, consumed);
+    }
+
+    private static Node? TryMatchPartOfWordEmphasis(TokenList tokens)
+    {
+        if (tokens.Peek(TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile))
+        {
+            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 5);
+        }
+
+        if (tokens.Peek(TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
+        {
+            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 4);
+        }
+
+        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile))
+        {
+            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 4);
+        }
+
+        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
+        {
+            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 3);
+        }
+
+        return null;
+    }
+
+    private static List<Node>? TryMatchOpeningEmphasis(TokenList tokens)
+    {
         if (tokens.PeekOr(
-                new[] { TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Whitespace }
-            ))
+                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Number },
+                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Word }))
         {
-            nodes.Insert(0, new Node(TypeOfNode.Text, " ", 1));
+            return new List<Node>();
         }
-        
-        if (newTokens.PeekAtOr(consumed, 
+
+        if (tokens.PeekOr(
+                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Number },
+                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Word }))
+        {
+            return new List<Node> { new Node(TypeOfNode.Text, " ", 1) };
+        }
+
+        return null;
+    }
+
+    private static Node? TryMatchClosingEmphasis(TokenList tokens, List<Node> nodes, int consumed)
+    {
+        var additionalConsumed = 0;
+
+        if (tokens.PeekAtOr(consumed,
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
-            ))
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile }))
         {
-            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
-        
-            consumed += 5;
-            
-            return new EmphasisNode(TypeOfNode.Emphasis, nodes, consumed);
+            additionalConsumed = 5;
+        }
+        else if (tokens.PeekAtOr(consumed,
+                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace },
+                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace }))
+        {
+            additionalConsumed = 4;
+        }
+        else
+        {
+            return null;
         }
         
-        if (newTokens.PeekAtOr(consumed, 
-                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace }
-            ))
-        {
-            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
-        
-            consumed += 4;
-            
-            return new EmphasisNode(TypeOfNode.Emphasis, nodes, consumed);
-        }
-
-        return new NullNode();
-
+        nodes.Add(new Node(TypeOfNode.Text, tokens.Offset(consumed)[0].Value, 1));
+        return new Node(TypeOfNode.Emphasis, nodes, consumed + additionalConsumed);
     }
 }

@@ -5,15 +5,10 @@ namespace Markdown.TokenParser.Parsers;
 
 public class BodyParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
         var (nodes, consumed) = MatchesStar.MatchStar(tokens, new ParagraphParser());
 
-        if (nodes.Count == 0)
-        {
-            return new NullNode();
-        }
-
-        return new BodyNode(nodes, consumed);
+        return nodes.Count == 0 ? null : new Node(TypeOfNode.Body, nodes, consumed);
     }
 }

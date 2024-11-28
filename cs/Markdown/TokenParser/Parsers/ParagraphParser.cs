@@ -5,7 +5,7 @@ namespace Markdown.TokenParser.Parsers;
 
 public class ParagraphParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
         return MatchesFirst.MatchFirst(tokens, new HashSentencesAndEofParser(), new SentencesAndEofParser());
     }

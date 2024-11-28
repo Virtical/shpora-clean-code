@@ -10,7 +10,7 @@ public class SentenceParser : IParser
     {
         this.parsers = parsers;
     }
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
         return MatchesFirst.MatchFirst(tokens, parsers);
     }

@@ -1,59 +1,68 @@
-﻿using Markdown.Tokenizer.Tokens;
+﻿using System.Collections.Generic;
+using Markdown.Tokenizer.Tokens;
 using Markdown.TokenParser.Nodes;
 
 namespace Markdown.TokenParser.Parsers;
 
 public class StrongParser : IParser
 {
-    public INode Match(TokenList tokens)
+    public Node? TryMatch(TokenList tokens)
     {
-        if (!tokens.PeekOr(
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Number },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word },
-                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Number },
-                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word }
-                ))
+        var openingNodes = TryMatchOpeningStrong(tokens);
+        if (openingNodes == null)
         {
-            return new NullNode();
+            return null;
         }
         
         var newTokens = tokens.Offset(3);
         
-        var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new StrongCloseParser());
+        var (contentNodes, consumed) = MatchesStar.MatchStar(newTokens, new StrongCloseParser());
+        openingNodes.AddRange(contentNodes);
         
+        return TryMatchClosingStrong(newTokens, openingNodes, consumed);
+    }
+
+    private static List<Node>? TryMatchOpeningStrong(TokenList tokens)
+    {
         if (tokens.PeekOr(
-                new[] { TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Whitespace }
-            ))
+                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Number },
+                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word }))
         {
-            nodes.Insert(0, new Node(TypeOfNode.Text, " ", 1));
+            return new List<Node>();
         }
-        
-        if (newTokens.PeekAtOr(consumed, 
+
+        if (tokens.PeekOr(
+                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Number },
+                new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word }))
+        {
+            return new List<Node> { new Node(TypeOfNode.Text, " ", 1) };
+        }
+
+        return null;
+    }
+
+    private static Node? TryMatchClosingStrong(TokenList tokens, List<Node> nodes, int consumed)
+    {
+        var additionalConsumed = 0;
+
+        if (tokens.PeekAtOr(consumed,
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
-                ))
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }))
         {
-            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
-        
-            consumed += 7;
-        
-            return new StrongNode(TypeOfNode.Strong, nodes, consumed);
+            additionalConsumed = 7;
+        }
+        else if (tokens.PeekAtOr(consumed,
+                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
+                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace }))
+        {
+            additionalConsumed = 6;
+        }
+        else
+        {
+            return null;
         }
         
-        if (newTokens.PeekAtOr(consumed, 
-                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace }
-            ))
-        {
-            nodes.Add(new Node(TypeOfNode.Text, newTokens.Offset(consumed)[0].Value, 1));
-        
-            consumed += 6;
-        
-            return new StrongNode(TypeOfNode.Strong, nodes, consumed);
-        }
-
-        return new NullNode();
-
+        nodes.Add(new Node(TypeOfNode.Text, tokens.Offset(consumed)[0].Value, 1));
+        return new Node(TypeOfNode.Strong, nodes, consumed + additionalConsumed);
     }
 }

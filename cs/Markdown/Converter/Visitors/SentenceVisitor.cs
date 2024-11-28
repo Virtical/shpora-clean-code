@@ -13,12 +13,12 @@ public class SentenceVisitor : IVisitor
         { TypeOfNode.Text, () => new TextVisitor() }
     };
 
-    public string Visit(INode node)
+    public string Visit(Node node)
     {
         return VisitorFor(node).Visit(node);
     }
 
-    private static IVisitor VisitorFor(INode node)
+    private static IVisitor VisitorFor(Node node)
     {
         if (SentenceVisitors.TryGetValue(node.Type, out var visitorFactory))
         {

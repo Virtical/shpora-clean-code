@@ -5,5 +5,5 @@ namespace Markdown.TokenParser.Parsers;
 
 public interface IParser
 {
-    public INode Match(TokenList tokens);
+    public Node? TryMatch(TokenList tokens);
 }
