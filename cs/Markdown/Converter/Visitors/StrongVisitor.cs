@@ -15,7 +15,7 @@ public class StrongVisitor : IVisitor
     
     public string Visit(Node node)
     {
-        return $"<strong>{string.Join(string.Empty, node.Descendants.Select(sentence => VisitorFor(sentence).Visit(sentence)))}</strong>";
+        return node.Descendants != null ? $"<strong>{string.Join(string.Empty, node.Descendants.Select(sentence => VisitorFor(sentence).Visit(sentence)))}</strong>" : "";
     }
     
     private static IVisitor VisitorFor(Node node)

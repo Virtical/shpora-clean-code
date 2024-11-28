@@ -14,6 +14,10 @@ public class ParagraphVisitor : IVisitor
 
     private string SentencesFor(Node paragraphNode)
     {
-        return string.Join(string.Empty, paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
+        if (paragraphNode.Descendants != null)
+            return string.Join(string.Empty,
+                paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
+        
+        return "";
     }
 }

@@ -9,6 +9,6 @@ public class EmphasisVisitor : IVisitor
     
     public string Visit(Node node)
     {
-        return $"<em>{string.Join(string.Empty, node.Descendants.Select(sentence => textVisitor.Visit(sentence)))}</em>";
+        return node.Descendants != null ? $"<em>{string.Join(string.Empty, node.Descendants.Select(sentence => textVisitor.Visit(sentence)))}</em>" : "";
     }
 }

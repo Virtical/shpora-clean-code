@@ -1,6 +1,6 @@
 ﻿using Markdown.TokenParser.Nodes;
 
-namespace Markdown.Converter;
+namespace Markdown.Converter.Visitors;
 
 public interface IVisitor
 {
