@@ -8,30 +8,33 @@ public class TextParser : IParser
     public Node? TryMatch(TokenList tokens)
     {
         if (tokens.PeekOr(
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Number, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Word, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Whitespace, TypeOfToken.EndOfFile }
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Number, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Word, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Newline, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Whitespace, TypeOfToken.EndOfParagraph }
             ))
         {
             return new Node(TypeOfNode.Text, tokens[1].Value, 3);
         }
         
         if (tokens.PeekOr(
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Number },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Word },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Underscore },
-                new[] { TypeOfToken.StartOfFile, TypeOfToken.Whitespace }
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Number },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Word },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Newline },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Underscore },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Whitespace }
             ))
         {
             return new Node(TypeOfNode.Text, tokens[1].Value, 2);
         }
         
         if (tokens.PeekOr(
-                new[] { TypeOfToken.Number, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Whitespace, TypeOfToken.EndOfFile }
+                new[] { TypeOfToken.Number, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Word, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Newline, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Whitespace, TypeOfToken.EndOfParagraph }
             ))
         {
             return new Node(TypeOfNode.Text, tokens[0].Value, 2);
@@ -40,6 +43,7 @@ public class TextParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.Number },
                 new[] { TypeOfToken.Word },
+                new[] { TypeOfToken.Newline },
                 new[] { TypeOfToken.Underscore },
                 new[] { TypeOfToken.Whitespace }
             ))

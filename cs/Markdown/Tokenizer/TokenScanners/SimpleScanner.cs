@@ -8,8 +8,8 @@ public class SimpleScanner : ITokenScanner
     private static readonly Dictionary<char, TypeOfToken> TokenTypes = new Dictionary<char, TypeOfToken>
     {
         { '_', TypeOfToken.Underscore },
-        { '\n', TypeOfToken.Newline },
         { ' ', TypeOfToken.Whitespace },
+        { '\n', TypeOfToken.Newline },
         { '#', TypeOfToken.Hash }
     };
 

@@ -7,6 +7,7 @@ public enum TypeOfToken
     Whitespace,
     Hash,
     Newline,
-    StartOfFile,
-    EndOfFile
+    NextParagraph,
+    StartOfParagraph,
+    EndOfParagraph
 }

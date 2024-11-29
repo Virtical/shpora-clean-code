@@ -11,77 +11,77 @@ public class MdTokenizerTests
     {
         yield return new TestCaseData(null, new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.StartOfParagraph), 
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("StringIsNull");
         
         yield return new TestCaseData("", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.StartOfParagraph), 
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("EmptyString");
         
         yield return new TestCaseData("SimpleText", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Word, "SimpleText"), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyText");
         
         yield return new TestCaseData("52", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Number, "52"), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyNumber");
         
         yield return new TestCaseData(" ", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Whitespace, " "), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyWhitespace");
         
         yield return new TestCaseData("_", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Underscore, "_"), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyUnderscore");
         
         yield return new TestCaseData("#", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Hash, "#"), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyHash");
         
         yield return new TestCaseData("\n", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile), 
+                new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.Newline, "\n"), 
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyNewline");
         
         yield return new TestCaseData("$%^&", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "$%^&"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("DifferentCharacters");
         
         yield return new TestCaseData("#World 52 _Hello_", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Hash, "#"),
                 new Token(TypeOfToken.Word, "World"),
                 new Token(TypeOfToken.Whitespace, " "),
@@ -90,82 +90,106 @@ public class MdTokenizerTests
                 new Token(TypeOfToken.Underscore, "_"),
                 new Token(TypeOfToken.Word, "Hello"),
                 new Token(TypeOfToken.Underscore, "_"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("MixedTokens");
         
-        yield return new TestCaseData("Hello\n_World_", new List<Token>
-            {
-                new Token(TypeOfToken.StartOfFile),
-                new Token(TypeOfToken.Word, "Hello"),
-                new Token(TypeOfToken.Newline, "\n"),
-                new Token(TypeOfToken.Underscore, "_"),
-                new Token(TypeOfToken.Word, "World"),
-                new Token(TypeOfToken.Underscore, "_"),
-                new Token(TypeOfToken.EndOfFile)
-            })
-            .SetName("MultilineText");
-        
         yield return new TestCaseData("Hello   World", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "Hello"),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Word, "World"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("MultipleWhitespaces");
         
+        yield return new TestCaseData("Hello\nWorld", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Word, "Hello"),
+                new Token(TypeOfToken.Newline, "\n"),
+                new Token(TypeOfToken.Word, "World"),
+                new Token(TypeOfToken.EndOfParagraph)
+            })
+            .SetName("TextWithSeveralLines");
+        
+        yield return new TestCaseData("Test\n\nTest", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Word, "Test"),
+                new Token(TypeOfToken.EndOfParagraph),
+                new Token(TypeOfToken.NextParagraph, 2),
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Word, "Test"),
+                new Token(TypeOfToken.EndOfParagraph)
+            })
+            .SetName("TextWithSeveralParagraphs");
+        
+        yield return new TestCaseData("# Test\n\nTest", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Hash, "#"),
+                new Token(TypeOfToken.Whitespace, " "),
+                new Token(TypeOfToken.Word, "Test"),
+                new Token(TypeOfToken.EndOfParagraph),
+                new Token(TypeOfToken.NextParagraph, 2),
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Word, "Test"),
+                new Token(TypeOfToken.EndOfParagraph)
+            })
+            .SetName("HeadingAndParagraph");
+        
         yield return new TestCaseData(@"\_Escaped\_", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "_", 2),
                 new Token(TypeOfToken.Word, "Escaped"),
                 new Token(TypeOfToken.Word, "_", 2),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("EscapedEmphasis");
         
         yield return new TestCaseData(@"\__Strong\__", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "_", 2),
                 new Token(TypeOfToken.Underscore, "_"),
                 new Token(TypeOfToken.Word, "Strong"),
                 new Token(TypeOfToken.Word, "_", 2),
                 new Token(TypeOfToken.Underscore, "_"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("EscapedStrong");
 
         yield return new TestCaseData(@"\# Heading", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "#", 2),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Word, "Heading"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("EscapedHash");
 
         yield return new TestCaseData(@"Hello\ World", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, @"Hello\"),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Word, "World"),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("EscapedWhitespace");
 
         yield return new TestCaseData(@"\\\\", new List<Token>
             {
-                new Token(TypeOfToken.StartOfFile),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "\\", 2),
                 new Token(TypeOfToken.Word, "\\", 2),
-                new Token(TypeOfToken.EndOfFile)
+                new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("DoubleEscape");
     }

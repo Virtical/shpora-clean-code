@@ -16,7 +16,7 @@ public class BodyVisitor : IVisitor
     public string Visit(Node bodyNode)
     {
         if (bodyNode.Descendants != null)
-            return string.Join(string.Empty,
+            return string.Join("\n\n",
                 bodyNode.Descendants.Select(paragraph => VisitorFor(paragraph).Visit(paragraph)));
 
         return "";

@@ -24,4 +24,11 @@ public class Token
         Value = value;
         Length = Value.Length;
     }
+    
+    public Token(TypeOfToken type, int length)
+    {
+        Type = type;
+        Value = "";
+        Length = length;
+    }
 }

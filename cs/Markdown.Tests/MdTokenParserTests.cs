@@ -110,6 +110,46 @@ public class MdTokenParserTests
                 }, 5))
             .SetName("TextWithSeveralWords");
         
+        yield return new TestCaseData("Test\nTest",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "Test", 2),
+                        new Node(TypeOfNode.Text, "\n", 1),
+                        new Node(TypeOfNode.Text, "Test", 2)
+                    }, 5),
+                }, 5))
+            .SetName("TextWithSeveralLines");
+        
+        yield return new TestCaseData("Test\n\nTest",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "Test", 3)
+                    }, 4),
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "Test", 3)
+                    }, 3)
+                }, 7))
+            .SetName("TextWithSeveralParagraphs");
+        
+        yield return new TestCaseData("# Test\n\nTest",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Heading, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "Test", 3)
+                    }, 6),
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "Test", 3)
+                    }, 3)
+                }, 9))
+            .SetName("HeadingAndParagraph");
+        
         yield return new TestCaseData("__Strong _Emphasis_ Strong__",
                 new Node(TypeOfNode.Body, new List<Node>
                 {

@@ -4,11 +4,11 @@ using Markdown.TokenParser.Nodes;
 
 namespace Markdown.TokenParser.Parsers;
 
-public class HashSentencesAndEofParser : IParser
+public class HashSentences : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
-        if (!tokens.Peek(TypeOfToken.StartOfFile, TypeOfToken.Hash, TypeOfToken.Whitespace))
+        if (!tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Hash, TypeOfToken.Whitespace))
         {
             return null;
         }
@@ -18,6 +18,11 @@ public class HashSentencesAndEofParser : IParser
         var newTokens = new TokenList(tokens.Take(1).Concat(tokens.Skip(3)));
         
         var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new SentenceParser(new StrongParser(), new EmphasisParser(), new TextParser()));
+        
+        if (newTokens.PeekAt(consumed, TypeOfToken.NextParagraph))
+        {
+            consumed++;
+        }
 
         return nodes.Count == 0 ? null : new Node(TypeOfNode.Heading, nodes, consumed + additionalConsumed);
     }

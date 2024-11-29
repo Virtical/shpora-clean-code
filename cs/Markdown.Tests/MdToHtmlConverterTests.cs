@@ -20,6 +20,10 @@ public class MdToHtmlConverterTests
     [TestCase("# _Test_ __Test__", "<h1><em>Test</em> <strong>Test</strong></h1>", TestName = "HeadingEmphasisAndStrong")]
     [TestCase("__Strong _Emphasis_ Strong__", "<p><strong>Strong <em>Emphasis</em> Strong</strong></p>", TestName = "ParagraphEmphasisInsideStrong")]
     [TestCase("# __Strong _Emphasis_ Strong__", "<h1><strong>Strong <em>Emphasis</em> Strong</strong></h1>", TestName = "HeadingEmphasisInsideStrong")]
+    [TestCase("Hello\nWorld", "<p>Hello\nWorld</p>", TestName = "TextWithSeveralLines")]
+    [TestCase("Test\n\nTest", "<p>Test</p>\n\n<p>Test</p>", TestName = "TextWithSeveralParagraphs")]
+    [TestCase("# Test\n\nTest", "<h1>Test</h1>\n\n<p>Test</p>", TestName = "HeadingAndParagraph")]
+    
     public void Parse_BuildCorrectAST_When(string markdown, string expectedHtml)
     {
         var tokenizer = new MdTokenizer();

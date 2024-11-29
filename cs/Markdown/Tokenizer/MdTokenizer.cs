@@ -9,6 +9,7 @@ public class MdTokenizer : IMdTokenizer
     private static readonly List<ITokenScanner> TokenScanners = new List<ITokenScanner>
     {
         new EscapingScanner(),
+        new NextParagraphScanner(),
         new SimpleScanner(),
         new NumberScanner(),
         new TextScanner()
@@ -16,8 +17,8 @@ public class MdTokenizer : IMdTokenizer
     public TokenList Tokenize(string text)
     {
         var tokensAsLinkedList = TokensAsLinkedList(text);
-        tokensAsLinkedList.AddFirst(new Token(TypeOfToken.StartOfFile));
-        tokensAsLinkedList.AddLast(new Token(TypeOfToken.EndOfFile));
+        tokensAsLinkedList.AddFirst(new Token(TypeOfToken.StartOfParagraph));
+        tokensAsLinkedList.AddLast(new Token(TypeOfToken.EndOfParagraph));
         
         return new TokenList(tokensAsLinkedList);
     }
@@ -31,7 +32,18 @@ public class MdTokenizer : IMdTokenizer
 
         var token = ScanOneToken(text);
         var remainingTokens = TokensAsLinkedList(text[token.Length..]);
-        remainingTokens.AddFirst(token);
+
+        if (token.Type == TypeOfToken.NextParagraph)
+        {
+            remainingTokens.AddFirst(new Token(TypeOfToken.StartOfParagraph));
+            remainingTokens.AddFirst(token);
+            remainingTokens.AddFirst(new Token(TypeOfToken.EndOfParagraph));
+        }
+        else
+        {
+            remainingTokens.AddFirst(token);
+        }
+
         
         return remainingTokens;
     }

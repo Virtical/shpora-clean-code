@@ -11,8 +11,8 @@ public class EmphasisCloseParser : IParser
         if (tokens.PeekOr(
                 new[] {TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace},
                 new[] {TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace},
-                new[] {TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfFile},
-                new[] {TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfFile}
+                new[] {TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph},
+                new[] {TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph}
             ))
         {
             return null;

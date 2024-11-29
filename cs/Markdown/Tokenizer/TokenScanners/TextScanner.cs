@@ -6,6 +6,7 @@ namespace Markdown.Tokenizer.TokenScanners;
 public class TextScanner : ITokenScanner
 {
     private readonly EscapingScanner escapingScanner = new();
+    private readonly NextParagraphScanner nextParagraphScanner = new();
     private readonly SimpleScanner simpleScanner = new();
     private readonly NumberScanner numberScanner = new();
     public Token? TryGetToken(string plainMarkdown)
@@ -25,6 +26,8 @@ public class TextScanner : ITokenScanner
                     var remainingText = plainMarkdown[currentIndex..];
                     
                     if (escapingScanner.TryGetToken(remainingText) != null)
+                        return false;
+                    if (nextParagraphScanner.TryGetToken(remainingText) != null)
                         return false;
                     if (simpleScanner.TryGetToken(remainingText) != null)
                         return false;

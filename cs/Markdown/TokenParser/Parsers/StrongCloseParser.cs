@@ -11,8 +11,8 @@ public class StrongCloseParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
                 new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Whitespace },
-                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile },
-                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfFile }
+                new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph }
                 ))
         {
             return null;
@@ -24,6 +24,6 @@ public class StrongCloseParser : IParser
             return node;
         }
 
-        return tokens.Any() && tokens[0].Type != TypeOfToken.EndOfFile ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
+        return tokens.Any() && tokens[0].Type != TypeOfToken.EndOfParagraph ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
     }
 }
