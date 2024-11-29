@@ -192,6 +192,16 @@ public class MdTokenizerTests
                 new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("DoubleEscape");
+        
+        yield return new TestCaseData("-+*", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.Bullet, "-", 1),
+                new Token(TypeOfToken.Bullet, "+", 1),
+                new Token(TypeOfToken.Bullet, "*", 1),
+                new Token(TypeOfToken.EndOfParagraph)
+            })
+            .SetName("Bullets");
     }
     
     [TestCaseSource(nameof(MdTokenizeCases))]

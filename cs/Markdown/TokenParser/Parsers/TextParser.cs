@@ -10,7 +10,7 @@ public class TextParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Number, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Word, TypeOfToken.EndOfParagraph },
-                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Newline, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Bullet, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Whitespace, TypeOfToken.EndOfParagraph }
             ))
@@ -21,7 +21,7 @@ public class TextParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Number },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Word },
-                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Newline },
+                new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Bullet },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Underscore },
                 new[] { TypeOfToken.StartOfParagraph, TypeOfToken.Whitespace }
             ))
@@ -32,7 +32,7 @@ public class TextParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.Number, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.Word, TypeOfToken.EndOfParagraph },
-                new[] { TypeOfToken.Newline, TypeOfToken.EndOfParagraph },
+                new[] { TypeOfToken.Bullet, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
                 new[] { TypeOfToken.Whitespace, TypeOfToken.EndOfParagraph }
             ))
@@ -43,7 +43,7 @@ public class TextParser : IParser
         if (tokens.PeekOr(
                 new[] { TypeOfToken.Number },
                 new[] { TypeOfToken.Word },
-                new[] { TypeOfToken.Newline },
+                new[] { TypeOfToken.Bullet },
                 new[] { TypeOfToken.Underscore },
                 new[] { TypeOfToken.Whitespace }
             ))

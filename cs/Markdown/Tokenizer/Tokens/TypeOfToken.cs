@@ -9,5 +9,6 @@ public enum TypeOfToken
     Newline,
     NextParagraph,
     StartOfParagraph,
-    EndOfParagraph
+    EndOfParagraph,
+    Bullet
 }

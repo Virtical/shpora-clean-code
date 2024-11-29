@@ -4,13 +4,13 @@ using Markdown.TokenParser.Nodes;
 
 namespace Markdown.Converter.Visitors;
 
-public class ParagraphVisitor : IVisitor
+public class UnorderedListVisitor : IVisitor
 {
-    private readonly SentenceVisitor sentenceVisitor = new();
+    private readonly ListItemVisitor sentenceVisitor = new();
     
     public string Visit(Node paragraphNode)
     {
-        return $"<p>{SentencesFor(paragraphNode)}</p>";
+        return $"<ul>{SentencesFor(paragraphNode)}</ul>";
     }
 
     private string SentencesFor(Node paragraphNode)

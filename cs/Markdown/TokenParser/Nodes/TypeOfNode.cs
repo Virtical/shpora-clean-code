@@ -7,5 +7,7 @@ public enum TypeOfNode
     Emphasis,
     Paragraph,
     Heading,
-    Body
+    Body,
+    UnorderedList,
+    ListItem
 }

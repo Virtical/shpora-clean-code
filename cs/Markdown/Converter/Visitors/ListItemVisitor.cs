@@ -1,18 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Markdown.TokenParser.Nodes;
 
 namespace Markdown.Converter.Visitors;
 
-public class ParagraphVisitor : IVisitor
+public class ListItemVisitor : IVisitor
 {
     private readonly SentenceVisitor sentenceVisitor = new();
     
-    public string Visit(Node paragraphNode)
+    public string Visit(Node node)
     {
-        return $"<p>{SentencesFor(paragraphNode)}</p>";
+        return $"<li>{SentencesFor(node)}</li>";
     }
-
+    
     private string SentencesFor(Node paragraphNode)
     {
         if (paragraphNode.Descendants != null)

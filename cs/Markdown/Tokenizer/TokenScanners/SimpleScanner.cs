@@ -10,7 +10,10 @@ public class SimpleScanner : ITokenScanner
         { '_', TypeOfToken.Underscore },
         { ' ', TypeOfToken.Whitespace },
         { '\n', TypeOfToken.Newline },
-        { '#', TypeOfToken.Hash }
+        { '#', TypeOfToken.Hash },
+        { '-', TypeOfToken.Bullet },
+        { '+', TypeOfToken.Bullet },
+        { '*', TypeOfToken.Bullet }
     };
 
     public Token? TryGetToken(string plainMarkdown)

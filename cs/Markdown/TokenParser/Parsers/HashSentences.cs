@@ -17,7 +17,7 @@ public class HashSentences : IParser
 
         var newTokens = new TokenList(tokens.Take(1).Concat(tokens.Skip(3)));
         
-        var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new SentenceParser(new StrongParser(), new EmphasisParser(), new TextParser()));
+        var (nodes, consumed) = MatchesStar.MatchStar(newTokens, new SentenceParser(new UnorderedListParser(), new StrongParser(), new EmphasisParser(), new TextParser(), new NewlineParser()));
         
         if (newTokens.PeekAt(consumed, TypeOfToken.NextParagraph))
         {

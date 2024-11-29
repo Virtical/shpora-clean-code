@@ -355,6 +355,125 @@ public class MdTokenParserTests
                     }, 15)
                 }, 15))
             .SetName("HeadingWithSelections");
+        
+        yield return new TestCaseData("-+*",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, "-", 2),
+                        new Node(TypeOfNode.Text, "+", 1), 
+                        new Node(TypeOfNode.Text, "*", 2),
+                    }, 5)
+                }, 5))
+            .SetName("Bullets");
+        
+        yield return new TestCaseData("- Пункт первый",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        {
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Пункт", 1),
+                                new Node(TypeOfNode.Text, " ", 1), 
+                                new Node(TypeOfNode.Text, "первый", 2),
+                            }, 7)
+                        }, 7)
+                    }, 7)
+                }, 7))
+            .SetName("UnorderedListWithOneListItem");
+        
+        yield return new TestCaseData("- Пункт первый\n- Пункт второй\n- Пункт третий",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        {
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Пункт", 1),
+                                new Node(TypeOfNode.Text, " ", 1), 
+                                new Node(TypeOfNode.Text, "первый", 1),
+                            }, 6),
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Пункт", 1),
+                                new Node(TypeOfNode.Text, " ", 1), 
+                                new Node(TypeOfNode.Text, "второй", 1),
+                            }, 6),
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Пункт", 1),
+                                new Node(TypeOfNode.Text, " ", 1), 
+                                new Node(TypeOfNode.Text, "третий", 2),
+                            }, 7)
+                        }, 19)
+                    }, 19)
+                }, 19))
+            .SetName("UnorderedListWithSeveralListItem");
+        
+        yield return new TestCaseData("- Уровень 1.1\n    - Уровень 2.1\n- Уровень 1.2\n    - Уровень 2.1\n    - Уровень 2.2",
+                new Node(TypeOfNode.Body, new List<Node>
+                {
+                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    {
+                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        {
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Уровень", 1),
+                                new Node(TypeOfNode.Text, " ", 1),
+                                new Node(TypeOfNode.Text, "1", 1),
+                                new Node(TypeOfNode.Text, ".", 1),
+                                new Node(TypeOfNode.Text, "1", 1),
+                                new Node(TypeOfNode.UnorderedList, new List<Node>
+                                {
+                                    new Node(TypeOfNode.ListItem, new List<Node>
+                                    {
+                                        new Node(TypeOfNode.Text, "Уровень", 1),
+                                        new Node(TypeOfNode.Text, " ", 1),
+                                        new Node(TypeOfNode.Text, "2", 1),
+                                        new Node(TypeOfNode.Text, ".", 1),
+                                        new Node(TypeOfNode.Text, "1", 1),
+                                    }, 12)
+                                }, 12)
+                            }, 20),
+                            
+                            new Node(TypeOfNode.ListItem, new List<Node>
+                            {
+                                new Node(TypeOfNode.Text, "Уровень", 1),
+                                new Node(TypeOfNode.Text, " ", 1),
+                                new Node(TypeOfNode.Text, "1", 1),
+                                new Node(TypeOfNode.Text, ".", 1),
+                                new Node(TypeOfNode.Text, "2", 1),
+                                new Node(TypeOfNode.UnorderedList, new List<Node>
+                                {
+                                    new Node(TypeOfNode.ListItem, new List<Node>
+                                    {
+                                        new Node(TypeOfNode.Text, "Уровень", 1),
+                                        new Node(TypeOfNode.Text, " ", 1),
+                                        new Node(TypeOfNode.Text, "2", 1),
+                                        new Node(TypeOfNode.Text, ".", 1),
+                                        new Node(TypeOfNode.Text, "1", 1),
+                                    }, 12),
+                                    new Node(TypeOfNode.ListItem, new List<Node>
+                                    {
+                                        new Node(TypeOfNode.Text, "Уровень", 1),
+                                        new Node(TypeOfNode.Text, " ", 1),
+                                        new Node(TypeOfNode.Text, "2", 1),
+                                        new Node(TypeOfNode.Text, ".", 1),
+                                        new Node(TypeOfNode.Text, "2", 2),
+                                    }, 13)
+                                }, 25)
+                            }, 33),
+                        }, 53)
+                    }, 53)
+                }, 53))
+            .SetName("NestedUnorderedLists");
     }
     
     [TestCaseSource(nameof(MdTokenParseCases))]

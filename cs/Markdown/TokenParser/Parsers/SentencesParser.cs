@@ -7,7 +7,7 @@ public class SentencesParser : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
-        var (nodes, consumed) = MatchesStar.MatchStar(tokens, new SentenceParser(new StrongParser(), new EmphasisParser(), new TextParser()));
+        var (nodes, consumed) = MatchesStar.MatchStar(tokens, new SentenceParser(new UnorderedListParser(), new StrongParser(), new EmphasisParser(), new TextParser(), new NewlineParser()));
 
         if (tokens.PeekAt(consumed, TypeOfToken.NextParagraph))
         {
