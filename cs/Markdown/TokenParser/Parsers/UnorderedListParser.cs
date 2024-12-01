@@ -14,8 +14,30 @@ public class UnorderedListParser : IParser
     }
     public Node? TryMatch(TokenList tokens)
     {
-        var (nodes, consumed) = MatchesStar.MatchStar(tokens, new ListItemParser(nestedLevel));
+        var bullets = new[] {"-", "+", "*" };
+
+        foreach (var bullet in bullets)
+        {
+            var isUnorderedList = TryGetUnorderedList(tokens, bullet, out var node);
+
+            if (isUnorderedList)
+            {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    public bool TryGetUnorderedList(TokenList tokens, string bullet, out Node? node)
+    {
+        node = default;
         
-        return nodes.Count == 0 ? null : new Node(TypeOfNode.UnorderedList, nodes, consumed);
+        var (nodes, consumed) = MatchesStar.MatchStar(tokens, new UnorderedListItemParser(nestedLevel, bullet));
+        if (nodes.Count == 0) return false;
+        
+        node = new Node(TypeOfNode.UnorderedList, nodes, consumed);
+        return true;
+
     }
 }

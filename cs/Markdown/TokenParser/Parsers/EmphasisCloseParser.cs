@@ -8,16 +8,27 @@ public class EmphasisCloseParser : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
-        if (tokens.PeekOr(
-                new[] {TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace},
-                new[] {TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace},
-                new[] {TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph},
-                new[] {TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph}
-            ))
+        if (IsClosingEmphasis(tokens))
         {
             return null;
         }
+        
+        var node = MatchesFirst.MatchFirst(tokens, new EmphasisParser());
+        if (node != null)
+        {
+            return node;
+        }
 
         return tokens.Any() ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
+    }
+
+    public static bool IsClosingEmphasis(TokenList tokens)
+    {
+        return tokens.PeekOr(
+            new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.Whitespace },
+            new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Whitespace },
+            new[] { TypeOfToken.Number, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph },
+            new[] { TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph }
+        );
     }
 }

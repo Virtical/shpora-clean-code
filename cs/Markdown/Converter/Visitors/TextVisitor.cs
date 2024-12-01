@@ -6,6 +6,6 @@ public class TextVisitor : IVisitor
 {
     public string Visit(Node node)
     {
-        return node.Value ?? "";
+        return node.Value ?? string.Empty;
     }
 }

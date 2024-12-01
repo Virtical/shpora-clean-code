@@ -7,17 +7,13 @@ public class ListItemVisitor : IVisitor
 {
     private readonly SentenceVisitor sentenceVisitor = new();
     
-    public string Visit(Node node)
+    public string Visit(Node listItemNode)
     {
-        return $"<li>{SentencesFor(node)}</li>";
-    }
-    
-    private string SentencesFor(Node paragraphNode)
-    {
-        if (paragraphNode.Descendants != null)
-            return string.Join(string.Empty,
-                paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
+        if (listItemNode.Descendants == null) return string.Empty;
         
-        return "";
+        var convertedSentences = listItemNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence));
+        var formattedContent = string.Join(string.Empty, convertedSentences);
+
+        return $"<li>{formattedContent}</li>";
     }
 }

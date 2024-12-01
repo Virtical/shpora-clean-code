@@ -17,13 +17,10 @@ public class MatchesStar
             if (node == null)
                 break;
             
-            if (node.Type is TypeOfNode.Emphasis or TypeOfNode.Strong)
+            if (node.Type is TypeOfNode.Emphasis or TypeOfNode.Strong && node.Descendants != null && node.Descendants[0].Value == " ")
             {
-                if (node.Descendants != null && node.Descendants[0].Value == " ")
-                {
-                    matchedNodes.Add(node.Descendants[0]);
-                    node.Descendants.RemoveAt(0);
-                }
+                matchedNodes.Add(node.Descendants[0]);
+                node.Descendants.RemoveAt(0);
             }
             
             matchedNodes.Add(node);

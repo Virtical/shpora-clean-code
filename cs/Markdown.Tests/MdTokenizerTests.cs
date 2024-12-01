@@ -2,6 +2,7 @@
 using Markdown.Tokenizer;
 using Markdown.Tokenizer.Tokens;
 using NUnit.Framework;
+using NUnit.Framework.Internal;
 
 namespace Markdown.Tests;
 [TestFixture]
@@ -16,7 +17,7 @@ public class MdTokenizerTests
             })
             .SetName("StringIsNull");
         
-        yield return new TestCaseData("", new List<Token>
+        yield return new TestCaseData(string.Empty, new List<Token>
             {
                 new Token(TypeOfToken.StartOfParagraph), 
                 new Token(TypeOfToken.EndOfParagraph)
@@ -57,7 +58,7 @@ public class MdTokenizerTests
         
         yield return new TestCaseData("#", new List<Token>
             {
-                new Token(TypeOfToken.StartOfParagraph), 
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Hash, "#"), 
                 new Token(TypeOfToken.EndOfParagraph)
             })
@@ -65,11 +66,23 @@ public class MdTokenizerTests
         
         yield return new TestCaseData("\n", new List<Token>
             {
-                new Token(TypeOfToken.StartOfParagraph), 
-                new Token(TypeOfToken.Newline, "\n"), 
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.EndOfParagraph),
+                new Token(TypeOfToken.Newline, "\n"),
+                new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("OnlyNewline");
+        
+        yield return new TestCaseData("\n\r", new List<Token>
+            {
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.EndOfParagraph),
+                new Token(TypeOfToken.Newline, "\n\r"),
+                new Token(TypeOfToken.StartOfParagraph),
+                new Token(TypeOfToken.EndOfParagraph)
+            })
+            .SetName("NewlineAndCarriageReturn");
         
         yield return new TestCaseData("$%^&", new List<Token>
             {
@@ -110,32 +123,22 @@ public class MdTokenizerTests
             {
                 new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "Hello"),
-                new Token(TypeOfToken.Newline, "\n"),
-                new Token(TypeOfToken.Word, "World"),
-                new Token(TypeOfToken.EndOfParagraph)
-            })
-            .SetName("TextWithSeveralLines");
-        
-        yield return new TestCaseData("Test\n\nTest", new List<Token>
-            {
-                new Token(TypeOfToken.StartOfParagraph),
-                new Token(TypeOfToken.Word, "Test"),
                 new Token(TypeOfToken.EndOfParagraph),
-                new Token(TypeOfToken.NextParagraph, 2),
+                new Token(TypeOfToken.Newline, "\n"),
                 new Token(TypeOfToken.StartOfParagraph),
-                new Token(TypeOfToken.Word, "Test"),
+                new Token(TypeOfToken.Word, "World"),
                 new Token(TypeOfToken.EndOfParagraph)
             })
             .SetName("TextWithSeveralParagraphs");
         
-        yield return new TestCaseData("# Test\n\nTest", new List<Token>
+        yield return new TestCaseData("# Test\nTest", new List<Token>
             {
                 new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Hash, "#"),
                 new Token(TypeOfToken.Whitespace, " "),
                 new Token(TypeOfToken.Word, "Test"),
                 new Token(TypeOfToken.EndOfParagraph),
-                new Token(TypeOfToken.NextParagraph, 2),
+                new Token(TypeOfToken.Newline, "\n"),
                 new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.Word, "Test"),
                 new Token(TypeOfToken.EndOfParagraph)
@@ -218,11 +221,10 @@ public class MdTokenizerTests
     public void Tokenize_CorrectlySplitsLongText()
     {
         var mdTokenizer = new MdTokenizer();
-        var longText = new string('a', 1000);
+        var longText = string.Concat(Enumerable.Repeat("_eee_ ", 10000));
     
         var tokens = mdTokenizer.Tokenize(longText);
     
-        tokens.Count().Should().Be(3);
-        tokens[1].Value.Should().Be(longText);
+        tokens.Count().Should().Be(40002);
     }
 }

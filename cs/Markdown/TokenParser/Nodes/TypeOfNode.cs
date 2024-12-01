@@ -9,5 +9,6 @@ public enum TypeOfNode
     Heading,
     Body,
     UnorderedList,
-    ListItem
+    ListItem,
+    Intersection
 }

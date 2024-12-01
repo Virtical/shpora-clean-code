@@ -9,13 +9,19 @@ public class StrongVisitor : IVisitor
 {
     private static readonly Dictionary<TypeOfNode, Func<IVisitor>> SentenceVisitors = new()
     {
+        { TypeOfNode.Strong, () => new StrongVisitor() },
         { TypeOfNode.Emphasis, () => new EmphasisVisitor() },
         { TypeOfNode.Text, () => new TextVisitor() }
     };
     
-    public string Visit(Node node)
+    public string Visit(Node strongNode)
     {
-        return node.Descendants != null ? $"<strong>{string.Join(string.Empty, node.Descendants.Select(sentence => VisitorFor(sentence).Visit(sentence)))}</strong>" : "";
+        if (strongNode.Descendants == null) return string.Empty;
+        
+        var convertedSentences = strongNode.Descendants.Select(sentence => VisitorFor(sentence).Visit(sentence));
+        var formattedContent = string.Join(string.Empty, convertedSentences);
+
+        return $"<strong>{formattedContent}</strong>";
     }
     
     private static IVisitor VisitorFor(Node node)

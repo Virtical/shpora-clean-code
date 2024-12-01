@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Markdown.Tokenizer.Tokens;
 using Markdown.TokenParser.Nodes;
 
@@ -8,6 +9,12 @@ public class StrongParser : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
+        var node = TryMatchPartOfWordStrong(tokens);
+        if (node != null)
+        {
+            return node;
+        }
+        
         var openingNodes = TryMatchOpeningStrong(tokens);
         if (openingNodes == null)
         {
@@ -17,10 +24,36 @@ public class StrongParser : IParser
         var newTokens = tokens.Offset(3);
         
         var (contentNodes, consumed) = MatchesStar.MatchStar(newTokens, new StrongCloseParser());
+        
         openingNodes.AddRange(contentNodes);
         
         return TryMatchClosingStrong(newTokens, openingNodes, consumed);
     }
+    private static Node? TryMatchPartOfWordStrong(TokenList tokens)
+    {
+        if (tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.Underscore,TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph))
+        {
+            return new Node(TypeOfNode.Strong, new List<Node>{ new Node(TypeOfNode.Text, tokens[3].Value, 1) }, 7);
+        }
+
+        if (tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore))
+        {
+            return new Node(TypeOfNode.Strong, new List<Node>{ new Node(TypeOfNode.Text, tokens[3].Value, 1) }, 6);
+        }
+
+        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph))
+        {
+            return new Node(TypeOfNode.Strong, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 6);
+        }
+
+        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.Underscore))
+        {
+            return new Node(TypeOfNode.Strong, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 5);
+        }
+
+        return null;
+    }
+    
 
     private static List<Node>? TryMatchOpeningStrong(TokenList tokens)
     {

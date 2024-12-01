@@ -5,25 +5,26 @@ namespace Markdown.Tokenizer.TokenScanners;
 
 public class SimpleScanner : ITokenScanner
 {
-    private static readonly Dictionary<char, TypeOfToken> TokenTypes = new Dictionary<char, TypeOfToken>
+    private static readonly Dictionary<char, TypeOfToken> TokenTypes = new()
     {
         { '_', TypeOfToken.Underscore },
         { ' ', TypeOfToken.Whitespace },
-        { '\n', TypeOfToken.Newline },
         { '#', TypeOfToken.Hash },
         { '-', TypeOfToken.Bullet },
         { '+', TypeOfToken.Bullet },
         { '*', TypeOfToken.Bullet }
     };
 
-    public Token? TryGetToken(string plainMarkdown)
+    public bool TryGetToken(string plainMarkdown, int index, out Token? token)
     {
-        if (string.IsNullOrEmpty(plainMarkdown))
-        {
-            return null;
-        }
+        token = default;
 
-        var firstChar = plainMarkdown[0];
-        return TokenTypes.TryGetValue(firstChar, out var tokenType) ? new Token(tokenType, firstChar.ToString()) : null;
+        if (!TokenTypes.TryGetValue(plainMarkdown[index], out var tokenType))
+        {
+            return false;
+        }
+        
+        token = new Token(tokenType, plainMarkdown[index].ToString());
+        return true;
     }
 }

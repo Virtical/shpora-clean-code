@@ -4,5 +4,5 @@ namespace Markdown.Tokenizer.TokenScanners;
 
 public interface ITokenScanner
 {
-    Token? TryGetToken(string input);
+    bool TryGetToken(string markdown, int index, out Token? token);
 }

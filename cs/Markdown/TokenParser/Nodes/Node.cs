@@ -2,34 +2,12 @@
 using System.Collections.Generic;
 
 namespace Markdown.TokenParser.Nodes;
-public class Node
+
+public record Node(TypeOfNode Type, List<Node>? Descendants, string? Value, int Consumed)
 {
-    public TypeOfNode Type { get; }
-    public string? Value { get; }
-    public int Consumed { get; }
-    public List<Node>? Descendants { get; }
+    public Node(TypeOfNode type, List<Node> descendants, int consumed) 
+        : this(type, descendants, null, consumed) { }
     
-    public Node(TypeOfNode type, List<Node> descendants, string value, int consumed)
-    {
-        Type = type;
-        Consumed = consumed;
-        Value = value;
-        Descendants = descendants;
-    }
-    
-    public Node(TypeOfNode type, List<Node> descendants, int consumed)
-    {
-        Type = type;
-        Consumed = consumed;
-        Value = null;
-        Descendants = descendants;
-    }
-    
-    public Node(TypeOfNode type, string value, int consumed)
-    {
-        Type = type;
-        Consumed = consumed;
-        Value = value;
-        Descendants = null;
-    }
+    public Node(TypeOfNode type, string value, int consumed) 
+        : this(type, null, value, consumed) { }
 }

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using Markdown.Tokenizer.Tokens;
 
 namespace Markdown.Tokenizer.TokenScanners;
@@ -6,44 +6,46 @@ namespace Markdown.Tokenizer.TokenScanners;
 public class TextScanner : ITokenScanner
 {
     private readonly EscapingScanner escapingScanner = new();
-    private readonly NextParagraphScanner nextParagraphScanner = new();
+    private readonly NewlineScanner newlineScanner = new();
     private readonly SimpleScanner simpleScanner = new();
     private readonly NumberScanner numberScanner = new();
-    public Token? TryGetToken(string plainMarkdown)
+    
+    public bool TryGetToken(string markdown, int index, out Token? token)
     {
-        if (string.IsNullOrEmpty(plainMarkdown))
-        {
-            return null;
-        }
-
+        token = default;
+        
         try
         {
-            int currentIndex = 0;
+            var text = ExtractText(markdown, ref index);
 
-            var text = new string(plainMarkdown
-                .TakeWhile((c, index) =>
-                {
-                    var remainingText = plainMarkdown[currentIndex..];
-                    
-                    if (escapingScanner.TryGetToken(remainingText) != null)
-                        return false;
-                    if (nextParagraphScanner.TryGetToken(remainingText) != null)
-                        return false;
-                    if (simpleScanner.TryGetToken(remainingText) != null)
-                        return false;
-                    if (numberScanner.TryGetToken(remainingText) != null)
-                        return false;
-                    
-                    currentIndex++;
-                    return true;
-                })
-                .ToArray());
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
 
-            return new Token(TypeOfToken.Word, text, currentIndex);
+            token = new Token(TypeOfToken.Word, text);
+            return true;
         }
         catch
         {
-            return null;
+            return false;
         }
+    }
+
+    private string ExtractText(string markdown, ref int index)
+    {
+        var result = new List<char>();
+
+        while (index < markdown.Length &&
+               !escapingScanner.TryGetToken(markdown, index, out _) &&
+               !newlineScanner.TryGetToken(markdown, index, out _) &&
+               !simpleScanner.TryGetToken(markdown, index, out _) &&
+               !numberScanner.TryGetToken(markdown, index, out _))
+        {
+            result.Add(markdown[index]);
+            index++;
+        }
+
+        return new string(result.ToArray());
     }
 }

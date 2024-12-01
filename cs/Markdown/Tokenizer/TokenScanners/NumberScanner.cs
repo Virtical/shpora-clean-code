@@ -5,17 +5,21 @@ namespace Markdown.Tokenizer.TokenScanners;
 
 public class NumberScanner : ITokenScanner
 {
-    public Token? TryGetToken(string plainMarkdown)
+    public bool TryGetToken(string plainMarkdown, int index, out Token? token)
     {
-        if (string.IsNullOrEmpty(plainMarkdown))
-        {
-            return null;
-        }
+        token = default;
         
         var number = new string(plainMarkdown
+            .Skip(index)
             .TakeWhile(char.IsDigit)
             .ToArray());
-            
-        return number.Length == 0 ? null : new Token(TypeOfToken.Number, number);
+
+        if (number.Length == 0)
+        {
+            return false;
+        }
+        
+        token = new Token(TypeOfToken.Number, number);
+        return true;
     }
 }

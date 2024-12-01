@@ -44,7 +44,7 @@ public class EmphasisParser : IParser
         {
             return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 4);
         }
-
+        
         if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
         {
             return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 3);

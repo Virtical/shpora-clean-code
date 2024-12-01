@@ -7,17 +7,13 @@ public class HeadingVisitor : IVisitor
 {
     private readonly SentenceVisitor sentenceVisitor = new();
     
-    public string Visit(Node paragraphNode)
+    public string Visit(Node headingNode)
     {
-        return $"<h1>{SentencesFor(paragraphNode)}</h1>";
-    }
-
-    private string SentencesFor(Node paragraphNode)
-    {
-        if (paragraphNode.Descendants != null)
-            return string.Join(string.Empty,
-                paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
+        if (headingNode.Descendants == null) return string.Empty;
         
-        return "";
+        var convertedSentences = headingNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence));
+        var formattedContent = string.Join(string.Empty, convertedSentences);
+
+        return $"<h1>{formattedContent}</h1>";
     }
 }

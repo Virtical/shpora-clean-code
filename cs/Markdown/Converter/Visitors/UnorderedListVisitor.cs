@@ -6,19 +6,15 @@ namespace Markdown.Converter.Visitors;
 
 public class UnorderedListVisitor : IVisitor
 {
-    private readonly ListItemVisitor sentenceVisitor = new();
+    private readonly ListItemVisitor listItemVisitor = new();
     
-    public string Visit(Node paragraphNode)
+    public string Visit(Node unorderedListNode)
     {
-        return $"<ul>{SentencesFor(paragraphNode)}</ul>";
-    }
-
-    private string SentencesFor(Node paragraphNode)
-    {
-        if (paragraphNode.Descendants != null)
-            return string.Join(string.Empty,
-                paragraphNode.Descendants.Select(sentence => sentenceVisitor.Visit(sentence)));
+        if (unorderedListNode.Descendants == null) return string.Empty;
         
-        return "";
+        var convertedListItems = unorderedListNode.Descendants.Select(listItem => listItemVisitor.Visit(listItem));
+        var formattedContent = string.Join(string.Empty, convertedListItems);
+
+        return $"<ul>{formattedContent}</ul>";
     }
 }

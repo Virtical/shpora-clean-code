@@ -9,6 +9,7 @@ public class SentenceVisitor : IVisitor
     private static readonly Dictionary<TypeOfNode, Func<IVisitor>> SentenceVisitors = new()
     {
         { TypeOfNode.UnorderedList, () => new UnorderedListVisitor() },
+        { TypeOfNode.Intersection, () => new IntersectionVisitor() },
         { TypeOfNode.Strong, () => new StrongVisitor() },
         { TypeOfNode.Emphasis, () => new EmphasisVisitor() },
         { TypeOfNode.Text, () => new TextVisitor() }

@@ -40,16 +40,6 @@ public class TokenList : IEnumerable<Token>
         return choices.Any(types => PeekAt(index, types));
     }
 
-    public TokenList Grab(int amount)
-    {
-        if (amount > tokens.Count)
-            throw new InvalidOperationException("Invalid amount requested");
-
-        var newTokens = tokens.Skip(amount);
-        
-        return new TokenList(newTokens);
-    }
-
     public TokenList Offset(int index)
     {
         if (index == 0)

@@ -15,11 +15,12 @@ public class BodyVisitor : IVisitor
     
     public string Visit(Node bodyNode)
     {
-        if (bodyNode.Descendants != null)
-            return string.Join("\n\n",
-                bodyNode.Descendants.Select(paragraph => VisitorFor(paragraph).Visit(paragraph)));
+        if (bodyNode.Descendants == null) return string.Empty;
+        
+        var convertedParagraphs = bodyNode.Descendants.Select(paragraph => VisitorFor(paragraph).Visit(paragraph));
+        var formattedContent = string.Join("\n", convertedParagraphs);
 
-        return "";
+        return formattedContent;
     }
     
     private static IVisitor VisitorFor(Node node)

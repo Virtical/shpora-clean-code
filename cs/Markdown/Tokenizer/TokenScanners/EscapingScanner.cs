@@ -5,21 +5,17 @@ namespace Markdown.Tokenizer.TokenScanners;
 
 public class EscapingScanner : ITokenScanner
 {
-    public Token? TryGetToken(string plainMarkdown)
+    public bool TryGetToken(string plainMarkdown, int index, out Token? token)
     {
-        var escapedCharacters = new char[] { '\\', '_', '#' };
-        if (string.IsNullOrEmpty(plainMarkdown))
-        {
-            return null;
-        }
+        var escapedCharacters = new[] { '\\', '_', '#' };
+        token = default;
 
-        if (plainMarkdown[0] != '\\') return null;
+        if (plainMarkdown.Length <= index + 1 || plainMarkdown[index] != '\\' || !escapedCharacters.Contains(plainMarkdown[index + 1]))
+        {
+            return false;
+        }
         
-        if (plainMarkdown.Length > 1 && escapedCharacters.Contains(plainMarkdown[1]))
-        {
-            return new Token(TypeOfToken.Word, plainMarkdown[1].ToString(), 2);
-        }
-
-        return null;
+        token = new Token(TypeOfToken.Word, plainMarkdown[index+1].ToString(), 2);
+        return true;
     }
 }
