@@ -26,7 +26,7 @@ public class StrongCloseParser : IParser
             return node;
         }
 
-        return tokens[0].Type != TypeOfToken.EndOfParagraph ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
+        return tokens[0].Type != TypeOfToken.EndOfParagraph ? new Node(TypeOfNode.Text, 1, Value: tokens[0].Value) : null;
     }
     
     public static bool IsClosingStrong(TokenList tokens, int i)

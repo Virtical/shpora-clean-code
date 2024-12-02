@@ -19,7 +19,7 @@ public class EmphasisCloseParser : IParser
             return node;
         }
 
-        return tokens.Any() ? new Node(TypeOfNode.Text, tokens[0].Value, 1) : null;
+        return tokens.Any() ? new Node(TypeOfNode.Text, 1, Value: tokens[0].Value) : null;
     }
 
     public static bool IsClosingEmphasis(TokenList tokens)

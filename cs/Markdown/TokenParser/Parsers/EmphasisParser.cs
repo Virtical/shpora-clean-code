@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Markdown.Tokenizer.Tokens;
 using Markdown.TokenParser.Nodes;
 
@@ -32,22 +33,22 @@ public class EmphasisParser : IParser
     {
         if (tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph))
         {
-            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 5);
+            return new Node(TypeOfNode.Emphasis, 5,new List<Node>{ new Node(TypeOfNode.Text, 1, Value: tokens[2].Value) });
         }
 
-        if (tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
+        if (tokens.Peek(TypeOfToken.StartOfParagraph, TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore) && tokens.Count() > 4 && tokens[4].Type != TypeOfToken.Underscore)
         {
-            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[2].Value, 1) }, 4);
+            return new Node(TypeOfNode.Emphasis, 4, new List<Node>{ new Node(TypeOfNode.Text, 1, Value: tokens[2].Value) });
         }
 
         if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore, TypeOfToken.EndOfParagraph))
         {
-            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 4);
+            return new Node(TypeOfNode.Emphasis, 4,new List<Node>{ new Node(TypeOfNode.Text, 1, Value: tokens[1].Value) });
         }
         
-        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore))
+        if (tokens.Peek(TypeOfToken.Underscore, TypeOfToken.Word, TypeOfToken.Underscore) && tokens.Count() > 3 && tokens[3].Type != TypeOfToken.Underscore)
         {
-            return new Node(TypeOfNode.Emphasis, new List<Node>{ new Node(TypeOfNode.Text, tokens[1].Value, 1) }, 3);
+            return new Node(TypeOfNode.Emphasis, 3, new List<Node>{ new Node(TypeOfNode.Text, 1, Value: tokens[1].Value) });
         }
 
         return null;
@@ -66,7 +67,7 @@ public class EmphasisParser : IParser
                 new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Number },
                 new[] { TypeOfToken.Whitespace, TypeOfToken.Underscore, TypeOfToken.Word }))
         {
-            return new List<Node> { new Node(TypeOfNode.Text, " ", 1) };
+            return new List<Node> { new Node(TypeOfNode.Text, 1, Value: " ") };
         }
 
         return null;
@@ -93,7 +94,7 @@ public class EmphasisParser : IParser
             return null;
         }
         
-        nodes.Add(new Node(TypeOfNode.Text, tokens.Offset(consumed)[0].Value, 1));
-        return new Node(TypeOfNode.Emphasis, nodes, consumed + additionalConsumed);
+        nodes.Add(new Node(TypeOfNode.Text, 1, Value: tokens.Offset(consumed)[0].Value));
+        return new Node(TypeOfNode.Emphasis, consumed + additionalConsumed, nodes);
     }
 }

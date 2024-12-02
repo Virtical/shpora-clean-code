@@ -34,7 +34,7 @@ public class UnorderedListItemParser : IParser
         
         consumed += additionalConsumed + IndentationSize();
         
-        return new Node(TypeOfNode.ListItem, nodes, consumed);
+        return new Node(TypeOfNode.ListItem, consumed, nodes);
     }
     
     private bool IsOpeningListItem(TokenList tokens, out int consumed)

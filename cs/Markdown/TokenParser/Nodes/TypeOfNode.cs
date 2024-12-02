@@ -10,5 +10,6 @@ public enum TypeOfNode
     Body,
     UnorderedList,
     ListItem,
-    Intersection
+    Intersection,
+    Newline
 }

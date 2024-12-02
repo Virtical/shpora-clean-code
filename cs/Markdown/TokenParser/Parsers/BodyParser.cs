@@ -9,6 +9,6 @@ public class BodyParser : IParser
     {
         var (nodes, consumed) = MatchesStar.MatchStar(tokens, new ParagraphParser());
 
-        return nodes.Count == 0 ? null : new Node(TypeOfNode.Body, nodes, consumed);
+        return nodes.Count == 0 ? null : new Node(TypeOfNode.Body, consumed, nodes);
     }
 }

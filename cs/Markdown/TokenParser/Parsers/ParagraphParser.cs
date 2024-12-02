@@ -7,6 +7,6 @@ public class ParagraphParser : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
-        return MatchesFirst.MatchFirst(tokens, new HashSentences(), new SentencesParser());
+        return MatchesFirst.MatchFirst(tokens, new NewlineParser(), new HashSentences(), new SentencesParser());
     }
 }

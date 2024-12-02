@@ -7,15 +7,15 @@ public class SentencesParser : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
+        if (tokens.Peek(TypeOfToken.Newline))
+        {
+            return null;
+        }
+        
         var sentenceParser = CreateSentenceParser();
         var (nodes, consumed) = MatchesStar.MatchStar(tokens, sentenceParser);
 
-        if (tokens.PeekAt(consumed, TypeOfToken.Newline))
-        {
-            consumed++;
-        }
-
-        return nodes.Count == 0 ? null : new Node(TypeOfNode.Paragraph, nodes, consumed);
+        return nodes.Count == 0 ? null : new Node(TypeOfNode.Paragraph, consumed, nodes);
     }
     
     private static SentenceParser CreateSentenceParser()

@@ -32,7 +32,7 @@ public class TextParser : IParser
 
     private static Node CreateTextNode(TokenList tokens, int valueIndex, int consumedTokens)
     {
-        return new Node(TypeOfNode.Text, tokens[valueIndex].Value, consumedTokens);
+        return new Node(TypeOfNode.Text, consumedTokens, Value: tokens[valueIndex].Value);
     }
 }
 

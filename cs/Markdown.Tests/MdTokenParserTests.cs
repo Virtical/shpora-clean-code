@@ -14,523 +14,519 @@ public class MdTokenParserTests
     {
         var tokenizer = new MdTokenizer();
         yield return new TestCaseData("Test",
-                new Node(TypeOfNode.Body , new List<Node>
+                new Node(TypeOfNode.Body , 3, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 3,new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 3)
-                }, 3))
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    })
+                }))
             .SetName("OnlyWord");
         
         yield return new TestCaseData("123",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 3,new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "123", 3)
-                    }, 3)
-                }, 3))
+                        new Node(TypeOfNode.Text, 3, Value: "123")
+                    })
+                }))
             .SetName("OnlyNumber");
         
         yield return new TestCaseData("_Test_",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Emphasis, new List<Node>
+                        new Node(TypeOfNode.Emphasis, 5, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, "Test", 1)
-                        }, 5)
-                    }, 5)
-                }, 5))
+                            new Node(TypeOfNode.Text, 1, Value: "Test")
+                        })
+                    })
+                }))
             .SetName("EmphasisWord");
         
         yield return new TestCaseData("__Test__",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 7, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 7, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, 
-                            new List<Node>
+                        new Node(TypeOfNode.Strong,7, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "Test", 1)
-                            }, 7)
-                    }, 7)
-                }, 7))
+                                new Node(TypeOfNode.Text, 1, Value: "Test")
+                            })
+                    })
+                }))
             .SetName("StrongWord");
         
         yield return new TestCaseData("# Test",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Heading, new List<Node>
+                    new Node(TypeOfNode.Heading, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 5)
-                }, 5))
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    })
+                }))
             .SetName("HashWord");
         
         yield return new TestCaseData("_785_",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Emphasis, 
-                            new List<Node>
+                        new Node(TypeOfNode.Emphasis, 5, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "785", 1)
-                            }, 5)
-                    }, 5)
-                }, 5))
+                                new Node(TypeOfNode.Text, 1, Value: "785")
+                            })
+                    })
+                }))
             .SetName("EmphasisNumber");
         
         yield return new TestCaseData("__543__",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 7, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 7, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, 
-                            new List<Node>
+                        new Node(TypeOfNode.Strong, 7, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "543", 1)
-                            }, 7)
-                    }, 7)
-                }, 7))
+                                new Node(TypeOfNode.Text, 1, Value: "543")
+                            })
+                    })
+                }))
             .SetName("StrongNumber");
         
         yield return new TestCaseData("Test Test",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 2),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "Test", 2)
-                    }, 5)
-                }, 5))
+                        new Node(TypeOfNode.Text, 2, Value: "Test"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 2, Value: "Test")
+                    })
+                }))
             .SetName("TextWithSeveralWords");
         
         yield return new TestCaseData("Test\nTest",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 7, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 3),
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    }),
+                    new Node(TypeOfNode.Newline, 1, Value: "\n"),
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 4)
-                }, 7))
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    })
+                }))
             .SetName("TextWithSeveralParagraphs");
         
-        yield return new TestCaseData("Test\n\rTest",
-                new Node(TypeOfNode.Body, new List<Node>
+        yield return new TestCaseData("Test\r\nTest",
+                new Node(TypeOfNode.Body, 7, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 3),
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    }),
+                    new Node(TypeOfNode.Newline, 1, Value: "\r\n"),
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 4)
-                }, 7))
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    })
+                }))
             .SetName("TextWithSeveralParagraphsWithCarriageReturn");
         
         yield return new TestCaseData("# Test\nTest",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 9, new List<Node>
                 {
-                    new Node(TypeOfNode.Heading, new List<Node>
+                    new Node(TypeOfNode.Heading, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 6),
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    }),
+                    new Node(TypeOfNode.Newline, 1, Value: "\n"),
+                    new Node(TypeOfNode.Paragraph, 3, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 3)
-                    }, 3)
-                }, 9))
+                        new Node(TypeOfNode.Text, 3, Value: "Test")
+                    })
+                }))
             .SetName("HeadingAndParagraph");
         
         yield return new TestCaseData("__Strong _Emphasis_ Strong__",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 13, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 13, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, 
-                            new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Strong", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Emphasis, new List<Node>
+                        new Node(TypeOfNode.Strong, 13, new List<Node>
+                        {
+                            new Node(TypeOfNode.Text, 1, Value: "Strong"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Emphasis, 4, new List<Node>
                                 {
-                                    new Node(TypeOfNode.Text, "Emphasis", 1), 
-                                }, 4),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "Strong", 1)
-                            }, 13)
-                    }, 13)
-                }, 13))
+                                    new Node(TypeOfNode.Text, 1, Value: "Emphasis"), 
+                                }),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "Strong")
+                        })
+                    })
+                }))
             .SetName("EmphasisInsideStrong");
         
         yield return new TestCaseData("_Emphasis __Strong__ Emphasis_",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 13, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 13, new List<Node>
                     {
-                        new Node(TypeOfNode.Emphasis, new List<Node>
+                        new Node(TypeOfNode.Emphasis, 13, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, "Emphasis", 1),
-                            new Node(TypeOfNode.Text, " ", 1),
-                            new Node(TypeOfNode.Text, "_", 1),
-                            new Node(TypeOfNode.Emphasis, new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Strong", 1), 
-                            }, 3),
-                            new Node(TypeOfNode.Text, "_", 1),
-                            new Node(TypeOfNode.Text, " ", 1),
-                            new Node(TypeOfNode.Text, "Emphasis", 1),
-                        }, 13)
-                    }, 13)
-                }, 13))
+                            new Node(TypeOfNode.Text, 1, Value: "Emphasis"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "_"),
+                            new Node(TypeOfNode.Text, 1, Value: "_"),
+                            new Node(TypeOfNode.Text, 1, Value: "Strong"),
+                            new Node(TypeOfNode.Text, 1, Value: "_"),
+                            new Node(TypeOfNode.Text, 1, Value: "_"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "Emphasis"),
+                        })
+                    })
+                }))
             .SetName("StrongInsideEmphasis");
         
         yield return new TestCaseData("__Test",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 5, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "_", 2), 
-                        new Node(TypeOfNode.Text, "_", 1), 
-                        new Node(TypeOfNode.Text, "Test", 2)
-                    }, 5)
-                }, 5))
+                        new Node(TypeOfNode.Text, 2, Value: "_"), 
+                        new Node(TypeOfNode.Text, 1, Value: "_"), 
+                        new Node(TypeOfNode.Text, 2, Value: "Test")
+                    })
+                }))
             .SetName("UnpairedStrong");
         
         yield return new TestCaseData("_Test",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 4, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 4, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "_", 2), 
-                        new Node(TypeOfNode.Text, "Test", 2)
-                    }, 4)
-                }, 4))
+                        new Node(TypeOfNode.Text, 2, Value: "_"), 
+                        new Node(TypeOfNode.Text, 2, Value: "Test")
+                    })
+                }))
             .SetName("UnpairedEmphasis");
         
         yield return new TestCaseData("# Test # Hash",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 9, new List<Node>
                 {
-                    new Node(TypeOfNode.Heading, new List<Node>
+                    new Node(TypeOfNode.Heading, 9, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Test", 2),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "#", 1), 
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "Hash", 2)
-                    }, 9)
-                }, 9))
+                        new Node(TypeOfNode.Text, 2, Value: "Test"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "#"), 
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 2, Value: "Hash")
+                    })
+                }))
             .SetName("HashInsideHeading");
         
         yield return new TestCaseData("Te_st Te_st",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 9, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 9, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "Te", 2),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "st", 1),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "Te", 1),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "st", 2)
-                    }, 9)
-                }, 9))
+                        new Node(TypeOfNode.Text, 2, Value: "Te"),
+                        new Node(TypeOfNode.Text, 1, Value: "_"),
+                        new Node(TypeOfNode.Text, 1, Value: "st"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "Te"),
+                        new Node(TypeOfNode.Text, 1, Value: "_"),
+                        new Node(TypeOfNode.Text, 2, Value: "st")
+                    })
+                }))
             .SetName("EmphasisInDifferentWords");
         
         yield return new TestCaseData("_ Test_",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 6, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 6, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "_", 2),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "Test", 1),
-                        new Node(TypeOfNode.Text, "_", 2)
-                    }, 6)
-                }, 6))
+                        new Node(TypeOfNode.Text, 2, Value: "_"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "Test"),
+                        new Node(TypeOfNode.Text, 2, Value: "_")
+                    })
+                }))
             .SetName("OpeningSingleUnderscoreFollowedByWhitespace");
         
         yield return new TestCaseData("__ Test__",
-                new Node(TypeOfNode.Body, new List<Node>
+                new Node(TypeOfNode.Body, 8, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Paragraph, 8, new List<Node>
                     {
-                        new Node(TypeOfNode.Text, "_", 2),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "Test", 1),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "_", 2)
-                    }, 8)
-                }, 8))
+                        new Node(TypeOfNode.Text, 2, Value: "_"),
+                        new Node(TypeOfNode.Text, 1, Value: "_"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "Test"),
+                        new Node(TypeOfNode.Text, 1, Value: "_"),
+                        new Node(TypeOfNode.Text, 2, Value: "_")
+                    })
+                }))
             .SetName("OpeningDoubleUnderscoreFollowedByWhitespace");
         
         yield return new TestCaseData("_Test _",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 6, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 6, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
-                    {
-                        new Node(TypeOfNode.Text, "_", 2),
-                        new Node(TypeOfNode.Text, "Test", 1),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "_", 2)
-                    }, 6)
-                }, 6))
+                    new Node(TypeOfNode.Text, 2, Value: "_"),
+                    new Node(TypeOfNode.Text, 1, Value: "Test"),
+                    new Node(TypeOfNode.Text, 1, Value: " "),
+                    new Node(TypeOfNode.Text, 2, Value: "_")
+                })
+            }))
             .SetName("ClosingSingleUnderscorePrecededByWhitespace");
-        
+
         yield return new TestCaseData("__Test __",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 8, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 8, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
-                    {
-                        new Node(TypeOfNode.Text, "_", 2),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "Test", 1),
-                        new Node(TypeOfNode.Text, " ", 1),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "_", 2)
-                    }, 8)
-                }, 8))
+                    new Node(TypeOfNode.Text, 2, Value: "_"),
+                    new Node(TypeOfNode.Text, 1, Value: "_"),
+                    new Node(TypeOfNode.Text, 1, Value: "Test"),
+                    new Node(TypeOfNode.Text, 1, Value: " "),
+                    new Node(TypeOfNode.Text, 1, Value: "_"),
+                    new Node(TypeOfNode.Text, 2, Value: "_")
+                })
+            }))
             .SetName("ClosingDoubleUnderscorePrecededByWhitespace");
-        
+
         yield return new TestCaseData("Test_25_87_Test",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 9, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 9, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
-                    {
-                        new Node(TypeOfNode.Text, "Test", 2),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "25", 1),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "87", 1),
-                        new Node(TypeOfNode.Text, "_", 1),
-                        new Node(TypeOfNode.Text, "Test", 2)
-                    }, 9)
-                }, 9))
+                    new Node(TypeOfNode.Text, 2, Value: "Test"),
+                    new Node(TypeOfNode.Text, 1, Value: "_"),
+                    new Node(TypeOfNode.Text, 1, Value: "25"),
+                    new Node(TypeOfNode.Text, 1, Value: "_"),
+                    new Node(TypeOfNode.Text, 1, Value: "87"),
+                    new Node(TypeOfNode.Text, 1, Value: "_"),
+                    new Node(TypeOfNode.Text, 2, Value: "Test")
+                })
+            }))
             .SetName("UnderscoreInsideTheTextWithNumbers");
-        
+
         yield return new TestCaseData("_Te_st",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 6, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 6, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Emphasis, 4, new List<Node>
                     {
-                        new Node(TypeOfNode.Emphasis, new List<Node>
-                        {
-                            new Node(TypeOfNode.Text, "Te", 1),
-                        }, 4),
-                        new Node(TypeOfNode.Text, "st", 2)
-                    }, 6)
-                }, 6))
+                        new Node(TypeOfNode.Text, 1, Value: "Te")
+                    }),
+                    new Node(TypeOfNode.Text, 2, Value: "st")
+                })
+            }))
             .SetName("EmphasisPartOfWord");
-        
+
         yield return new TestCaseData("__Te__st",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 8, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 8, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Strong, 6, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, new List<Node>
-                        {
-                            new Node(TypeOfNode.Text, "Te", 1),
-                        }, 6),
-                        new Node(TypeOfNode.Text, "st", 2)
-                    }, 8)
-                }, 8))
+                        new Node(TypeOfNode.Text, 1, Value: "Te")
+                    }),
+                    new Node(TypeOfNode.Text, 2, Value: "st")
+                })
+            }))
             .SetName("StrongPartOfWord");
-        
+
         yield return new TestCaseData("_Test_ __Test__",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 11, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 11, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Emphasis, 4, new List<Node>
                     {
-                        new Node(TypeOfNode.Emphasis, new List<Node>
-                        {
-                            new Node(TypeOfNode.Text, "Test", 1),
-                        }, 4),
-                        new Node(TypeOfNode.Text, " ", 1), 
-                        new Node(TypeOfNode.Strong, new List<Node>
-                        {
-                            new Node(TypeOfNode.Text, "Test", 1),
-                        }, 7),
-                    }, 11)
-                }, 11))
+                        new Node(TypeOfNode.Text, 1, Value: "Test")
+                    }),
+                    new Node(TypeOfNode.Text, 1, Value: " "),
+                    new Node(TypeOfNode.Strong, 7, new List<Node>
+                    {
+                        new Node(TypeOfNode.Text, 1, Value: "Test")
+                    })
+                })
+            }))
             .SetName("WhitespaceSeparatedSelections");
-        
+
         yield return new TestCaseData("# __Strong _Emphasis_ Strong__",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 15, new List<Node>
+            {
+                new Node(TypeOfNode.Heading, 15, new List<Node>
                 {
-                    new Node(TypeOfNode.Heading, new List<Node>
+                    new Node(TypeOfNode.Strong, 13, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, 
-                            new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Strong", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Emphasis, new List<Node>
-                                {
-                                    new Node(TypeOfNode.Text, "Emphasis", 1), 
-                                }, 4),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "Strong", 1)
-                            }, 13)
-                    }, 15)
-                }, 15))
+                        new Node(TypeOfNode.Text, 1, Value: "Strong"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Emphasis, 4, new List<Node>
+                        {
+                            new Node(TypeOfNode.Text, 1, Value: "Emphasis")
+                        }),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "Strong")
+                    })
+                })
+            }))
             .SetName("HeadingWithSelections");
         
         yield return new TestCaseData("-+*",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 5, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 5, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
-                    {
-                        new Node(TypeOfNode.Text, "-", 2),
-                        new Node(TypeOfNode.Text, "+", 1), 
-                        new Node(TypeOfNode.Text, "*", 2),
-                    }, 5)
-                }, 5))
+                    new Node(TypeOfNode.Text, 2, Value: "-"),
+                    new Node(TypeOfNode.Text, 1, Value: "+"),
+                    new Node(TypeOfNode.Text, 2, Value: "*")
+                })
+            }))
             .SetName("Bullets");
-        
+
         yield return new TestCaseData("- Пункт первый",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 7, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 7, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.UnorderedList, 7, new List<Node>
                     {
-                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        new Node(TypeOfNode.ListItem, 7, new List<Node>
                         {
-                            new Node(TypeOfNode.ListItem, new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Пункт", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "первый", 2),
-                            }, 7)
-                        }, 7)
-                    }, 7)
-                }, 7))
+                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 2, Value: "первый")
+                        })
+                    })
+                })
+            }))
             .SetName("UnorderedListWithOneListItem");
-        
+
         yield return new TestCaseData("- Пункт первый\n- Пункт второй\n- Пункт третий",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 23, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 23, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.UnorderedList, 23, new List<Node>
                     {
-                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        new Node(TypeOfNode.ListItem, 7, new List<Node>
                         {
-                            new Node(TypeOfNode.ListItem, new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Пункт", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "первый", 2),
-                            }, 7),
-                            new Node(TypeOfNode.ListItem, new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Пункт", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "второй", 2),
-                            }, 8),
-                            new Node(TypeOfNode.ListItem, new List<Node>
-                            {
-                                new Node(TypeOfNode.Text, "Пункт", 1),
-                                new Node(TypeOfNode.Text, " ", 1), 
-                                new Node(TypeOfNode.Text, "третий", 2),
-                            }, 8)
-                        }, 23)
-                    }, 23)
-                }, 23))
+                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 2, Value: "первый")
+                        }),
+                        new Node(TypeOfNode.ListItem, 8, new List<Node>
+                        {
+                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 2, Value: "второй")
+                        }),
+                        new Node(TypeOfNode.ListItem, 8, new List<Node>
+                        {
+                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 2, Value: "третий")
+                        })
+                    })
+                })
+            }))
             .SetName("UnorderedListWithSeveralListItem");
-        
+
         yield return new TestCaseData("- Уровень 1.1\n    - Уровень 2.1\n- Уровень 1.2\n    - Уровень 2.1\n    - Уровень 2.2",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 61, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 61, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.UnorderedList, 61, new List<Node>
                     {
-                        new Node(TypeOfNode.UnorderedList, new List<Node>
+                        new Node(TypeOfNode.ListItem, 23, new List<Node>
                         {
-                            new Node(TypeOfNode.ListItem, new List<Node>
+                            new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "1"),
+                            new Node(TypeOfNode.Text, 1, Value: "."),
+                            new Node(TypeOfNode.Text, 2, Value: "1"),
+                            new Node(TypeOfNode.UnorderedList, 14, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "Уровень", 1),
-                                new Node(TypeOfNode.Text, " ", 1),
-                                new Node(TypeOfNode.Text, "1", 1),
-                                new Node(TypeOfNode.Text, ".", 1),
-                                new Node(TypeOfNode.Text, "1", 2),
-                                new Node(TypeOfNode.UnorderedList, new List<Node>
+                                new Node(TypeOfNode.ListItem, 14, new List<Node>
                                 {
-                                    new Node(TypeOfNode.ListItem, new List<Node>
-                                    {
-                                        new Node(TypeOfNode.Text, "Уровень", 1),
-                                        new Node(TypeOfNode.Text, " ", 1),
-                                        new Node(TypeOfNode.Text, "2", 1),
-                                        new Node(TypeOfNode.Text, ".", 1),
-                                        new Node(TypeOfNode.Text, "1", 2),
-                                    }, 14)
-                                }, 14)
-                            }, 23),
-                            
-                            new Node(TypeOfNode.ListItem, new List<Node>
+                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 1, Value: " "),
+                                    new Node(TypeOfNode.Text, 1, Value: "2"),
+                                    new Node(TypeOfNode.Text, 1, Value: "."),
+                                    new Node(TypeOfNode.Text, 2, Value: "1")
+                                })
+                            })
+                        }),
+                        new Node(TypeOfNode.ListItem, 38, new List<Node>
+                        {
+                            new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "1"),
+                            new Node(TypeOfNode.Text, 1, Value: "."),
+                            new Node(TypeOfNode.Text, 2, Value: "2"),
+                            new Node(TypeOfNode.UnorderedList, 28, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "Уровень", 1),
-                                new Node(TypeOfNode.Text, " ", 1),
-                                new Node(TypeOfNode.Text, "1", 1),
-                                new Node(TypeOfNode.Text, ".", 1),
-                                new Node(TypeOfNode.Text, "2", 2),
-                                new Node(TypeOfNode.UnorderedList, new List<Node>
+                                new Node(TypeOfNode.ListItem, 14, new List<Node>
                                 {
-                                    new Node(TypeOfNode.ListItem, new List<Node>
-                                    {
-                                        new Node(TypeOfNode.Text, "Уровень", 1),
-                                        new Node(TypeOfNode.Text, " ", 1),
-                                        new Node(TypeOfNode.Text, "2", 1),
-                                        new Node(TypeOfNode.Text, ".", 1),
-                                        new Node(TypeOfNode.Text, "1", 2),
-                                    }, 14),
-                                    new Node(TypeOfNode.ListItem, new List<Node>
-                                    {
-                                        new Node(TypeOfNode.Text, "Уровень", 1),
-                                        new Node(TypeOfNode.Text, " ", 1),
-                                        new Node(TypeOfNode.Text, "2", 1),
-                                        new Node(TypeOfNode.Text, ".", 1),
-                                        new Node(TypeOfNode.Text, "2", 2),
-                                    }, 14)
-                                }, 28)
-                            }, 38),
-                        }, 61)
-                    }, 61)
-                }, 61))
+                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 1, Value: " "),
+                                    new Node(TypeOfNode.Text, 1, Value: "2"),
+                                    new Node(TypeOfNode.Text, 1, Value: "."),
+                                    new Node(TypeOfNode.Text, 2, Value: "1")
+                                }),
+                                new Node(TypeOfNode.ListItem, 14, new List<Node>
+                                {
+                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 1, Value: " "),
+                                    new Node(TypeOfNode.Text, 1, Value: "2"),
+                                    new Node(TypeOfNode.Text, 1, Value: "."),
+                                    new Node(TypeOfNode.Text, 2, Value: "2")
+                                })
+                            })
+                        })
+                    })
+                })
+            }))
             .SetName("NestedUnorderedLists");
-        
+
         yield return new TestCaseData("__s _E _e_ E_ s__",
-                new Node(TypeOfNode.Body, new List<Node>
+            new Node(TypeOfNode.Body, 19, new List<Node>
+            {
+                new Node(TypeOfNode.Paragraph, 19, new List<Node>
                 {
-                    new Node(TypeOfNode.Paragraph, new List<Node>
+                    new Node(TypeOfNode.Strong, 19, new List<Node>
                     {
-                        new Node(TypeOfNode.Strong, new List<Node>
+                        new Node(TypeOfNode.Text, 1, Value: "s"),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Emphasis, 10, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, "s", 1),
-                            new Node(TypeOfNode.Text, " ", 1),
-                            new Node(TypeOfNode.Emphasis, new List<Node>
+                            new Node(TypeOfNode.Text, 1, Value: "E"),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Emphasis, 4, new List<Node>
                             {
-                                new Node(TypeOfNode.Text, "E", 1),
-                                new Node(TypeOfNode.Text, " ", 1),
-                                new Node(TypeOfNode.Emphasis, new List<Node>
-                                {
-                                    new Node(TypeOfNode.Text, "e", 1)
-                                }, 4),
-                                new Node(TypeOfNode.Text, " ", 1),
-                                new Node(TypeOfNode.Text, "E", 1)
-                            }, 10),
-                            new Node(TypeOfNode.Text, " ", 1),
-                            new Node(TypeOfNode.Text, "s", 1)
-                        }, 19)
-                    }, 19)
-                }, 19))
+                                new Node(TypeOfNode.Text, 1, Value: "e")
+                            }),
+                            new Node(TypeOfNode.Text, 1, Value: " "),
+                            new Node(TypeOfNode.Text, 1, Value: "E")
+                        }),
+                        new Node(TypeOfNode.Text, 1, Value: " "),
+                        new Node(TypeOfNode.Text, 1, Value: "s")
+                    })
+                })
+            }))
             .SetName("EmphasisInsideEmphasis");
     }
     

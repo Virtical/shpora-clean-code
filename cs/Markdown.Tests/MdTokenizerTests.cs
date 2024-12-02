@@ -74,11 +74,11 @@ public class MdTokenizerTests
             })
             .SetName("OnlyNewline");
         
-        yield return new TestCaseData("\n\r", new List<Token>
+        yield return new TestCaseData("\r\n", new List<Token>
             {
                 new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.EndOfParagraph),
-                new Token(TypeOfToken.Newline, "\n\r"),
+                new Token(TypeOfToken.Newline, "\r\n"),
                 new Token(TypeOfToken.StartOfParagraph),
                 new Token(TypeOfToken.EndOfParagraph)
             })

@@ -7,20 +7,19 @@ public class NewlineScanner : ITokenScanner
     public bool TryGetToken(string plainMarkdown, int index, out Token? token)
     {
         token = default;
-
-        if (plainMarkdown[index] != '\n')
+        
+        if (plainMarkdown[index] == '\r' && plainMarkdown.Length > index + 1 && plainMarkdown[index + 1] == '\n')
         {
-            return false;
+            token = new Token(TypeOfToken.Newline, "\r\n");
+            return true;
         }
-
-        if (plainMarkdown.Length > index + 1 && plainMarkdown[index + 1] == '\r')
+        
+        if (plainMarkdown[index] == '\n')
         {
-            token = new Token(TypeOfToken.Newline, "\n\r");
+            token = new Token(TypeOfToken.Newline, "\n");
             return true;
         }
 
-        token = new Token(TypeOfToken.Newline, "\n");
-        return true;
-
+        return false;
     }
 }

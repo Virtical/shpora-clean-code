@@ -56,10 +56,10 @@ public class IntersectionParser : IParser
         var descendants = tokens
             .Take(end)
             .Where(token => token.Type is not (TypeOfToken.StartOfParagraph or TypeOfToken.EndOfParagraph))
-            .Select(token => new Node(TypeOfNode.Text, token.Value, 1))
+            .Select(token => new Node(TypeOfNode.Text, 1, Value: token.Value))
             .ToList();
 
-        return new Node(TypeOfNode.Intersection, descendants, end);
+        return new Node(TypeOfNode.Intersection, end, descendants);
     }
     
     private static bool TryMatchOpeningStrong(TokenList tokens, int consumed, out int additionalConsumed)

@@ -9,6 +9,7 @@ public class BodyVisitor : IVisitor
 {
     private static readonly Dictionary<TypeOfNode, Func<IVisitor>> SentenceVisitors = new()
     {
+        { TypeOfNode.Newline, () => new NewlineVisitor() },
         { TypeOfNode.Heading, () => new HeadingVisitor() },
         { TypeOfNode.Paragraph, () => new ParagraphVisitor() }
     };
@@ -18,7 +19,7 @@ public class BodyVisitor : IVisitor
         if (bodyNode.Descendants == null) return string.Empty;
         
         var convertedParagraphs = bodyNode.Descendants.Select(paragraph => VisitorFor(paragraph).Visit(paragraph));
-        var formattedContent = string.Join("\n", convertedParagraphs);
+        var formattedContent = string.Join(string.Empty, convertedParagraphs);
 
         return formattedContent;
     }

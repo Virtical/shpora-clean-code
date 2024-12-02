@@ -36,7 +36,7 @@ public class UnorderedListParser : IParser
         var (nodes, consumed) = MatchesStar.MatchStar(tokens, new UnorderedListItemParser(nestedLevel, bullet));
         if (nodes.Count == 0) return false;
         
-        node = new Node(TypeOfNode.UnorderedList, nodes, consumed);
+        node = new Node(TypeOfNode.UnorderedList, consumed, nodes);
         return true;
 
     }

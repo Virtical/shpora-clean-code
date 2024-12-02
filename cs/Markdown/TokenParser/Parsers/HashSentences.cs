@@ -8,7 +8,7 @@ public class HashSentences : IParser
 {
     public Node? TryMatch(TokenList tokens)
     {
-        if (!TryExtractHeadingTokens(tokens, out var remainingTokens) || remainingTokens == null)
+        if (tokens.Peek(TypeOfToken.Newline) || !TryExtractHeadingTokens(tokens, out var remainingTokens) || remainingTokens == null)
         {
             return null;
         }
@@ -16,13 +16,8 @@ public class HashSentences : IParser
         var sentenceParser = CreateSentenceParser();
         
         var (nodes, consumed) = MatchesStar.MatchStar(remainingTokens, sentenceParser);
-        
-        if (remainingTokens.PeekAt(consumed, TypeOfToken.Newline))
-        {
-            consumed++;
-        }
 
-        return nodes.Count == 0 ? null : new Node(TypeOfNode.Heading, nodes, consumed + 2);
+        return nodes.Count == 0 ? null : new Node(TypeOfNode.Heading,consumed + 2, nodes);
     }
 
     private static bool TryExtractHeadingTokens(TokenList tokens, out TokenList? remainingTokens)
