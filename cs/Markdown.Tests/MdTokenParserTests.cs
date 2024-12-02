@@ -405,7 +405,7 @@ public class MdTokenParserTests
                     {
                         new Node(TypeOfNode.ListItem, 7, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 2, Value: "Пункт"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 2, Value: "первый")
                         })
@@ -423,19 +423,19 @@ public class MdTokenParserTests
                     {
                         new Node(TypeOfNode.ListItem, 7, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 2, Value: "Пункт"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 2, Value: "первый")
                         }),
                         new Node(TypeOfNode.ListItem, 8, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 2, Value: "Пункт"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 2, Value: "второй")
                         }),
                         new Node(TypeOfNode.ListItem, 8, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Пункт"),
+                            new Node(TypeOfNode.Text, 2, Value: "Пункт"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 2, Value: "третий")
                         })
@@ -453,7 +453,7 @@ public class MdTokenParserTests
                     {
                         new Node(TypeOfNode.ListItem, 23, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                            new Node(TypeOfNode.Text, 2, Value: "Уровень"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 1, Value: "1"),
                             new Node(TypeOfNode.Text, 1, Value: "."),
@@ -462,7 +462,7 @@ public class MdTokenParserTests
                             {
                                 new Node(TypeOfNode.ListItem, 14, new List<Node>
                                 {
-                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 2, Value: "Уровень"),
                                     new Node(TypeOfNode.Text, 1, Value: " "),
                                     new Node(TypeOfNode.Text, 1, Value: "2"),
                                     new Node(TypeOfNode.Text, 1, Value: "."),
@@ -472,7 +472,7 @@ public class MdTokenParserTests
                         }),
                         new Node(TypeOfNode.ListItem, 38, new List<Node>
                         {
-                            new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                            new Node(TypeOfNode.Text, 2, Value: "Уровень"),
                             new Node(TypeOfNode.Text, 1, Value: " "),
                             new Node(TypeOfNode.Text, 1, Value: "1"),
                             new Node(TypeOfNode.Text, 1, Value: "."),
@@ -481,7 +481,7 @@ public class MdTokenParserTests
                             {
                                 new Node(TypeOfNode.ListItem, 14, new List<Node>
                                 {
-                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 2, Value: "Уровень"),
                                     new Node(TypeOfNode.Text, 1, Value: " "),
                                     new Node(TypeOfNode.Text, 1, Value: "2"),
                                     new Node(TypeOfNode.Text, 1, Value: "."),
@@ -489,7 +489,7 @@ public class MdTokenParserTests
                                 }),
                                 new Node(TypeOfNode.ListItem, 14, new List<Node>
                                 {
-                                    new Node(TypeOfNode.Text, 1, Value: "Уровень"),
+                                    new Node(TypeOfNode.Text, 2, Value: "Уровень"),
                                     new Node(TypeOfNode.Text, 1, Value: " "),
                                     new Node(TypeOfNode.Text, 1, Value: "2"),
                                     new Node(TypeOfNode.Text, 1, Value: "."),

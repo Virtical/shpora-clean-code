@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Markdown.Tokenizer.Tokens;
 using Markdown.TokenParser.Nodes;
 
@@ -20,8 +21,12 @@ public class UnorderedListItemParser : IParser
         {
             return null;
         }
-        
-        var newTokens = tokens.Offset(additionalConsumed + IndentationSize());
+
+        var newTokens = new TokenList(
+            new[] { new Token(TypeOfToken.StartOfParagraph) }
+                .Concat(tokens.Skip(additionalConsumed + IndentationSize()))
+        );
+        additionalConsumed--;
 
         var sentenceParser = CreateSentenceParser();
         
@@ -92,7 +97,8 @@ public class UnorderedListItemParser : IParser
     {
         return  new SentenceParser(
             new UnorderedListParser(nestedLevel + 1), 
-            new StrongParser(),
+            new IntersectionParser(),
+            new StrongParser(), 
             new EmphasisParser(), 
             new TextParser());
     }

@@ -41,6 +41,11 @@ public class MdTests
     [TestCase("__s __E _e_ E__ s__", "<strong>s <strong>E <em>e</em> E</strong> s</strong>", TestName = "StrongInsideStrong")]
     [TestCase("_Intersection __Emphasis And_ Strong__", "_Intersection __Emphasis And_ Strong__", TestName = "IntersectionEmphasisAndStrong")]
     [TestCase("__Intersection _Strong And__ Emphasis_", "__Intersection _Strong And__ Emphasis_", TestName = "IntersectionStrongAndEmphasis")]
+    [TestCase("- # Heading", "<ul><li># Heading</li></ul>", TestName = "HeadingInUnorderedList")]
+    [TestCase("- __Strong__", "<ul><li><strong>Strong</strong></li></ul>", TestName = "StrongInUnorderedList")]
+    [TestCase("- _Emphasis_", "<ul><li><em>Emphasis</em></li></ul>", TestName = "EmphasisInUnorderedList")]
+    [TestCase("- Nested tags\n    + _Emphasis __Strong__ Emphasis_\n    + __Strong _Emphasis_ Strong__", "<ul><li>Nested tags<ul><li><em>Emphasis __Strong__ Emphasis</em></li><li><strong>Strong <em>Emphasis</em> Strong</strong></li></ul></li></ul>", TestName = "NestedTagsInUnorderedList")]
+    [TestCase("- Intersections\n    + _Intersection __Emphasis And_ Strong__\n    + __Intersection _Strong And__ Emphasis_", "<ul><li>Intersections<ul><li>_Intersection __Emphasis And_ Strong__</li><li>__Intersection _Strong And__ Emphasis_</li></ul></li></ul>", TestName = "IntersectionsInUnorderedList")]
     
     public void Render_CorrectHtml_When(string markdown, string expectedHtml)
     {
